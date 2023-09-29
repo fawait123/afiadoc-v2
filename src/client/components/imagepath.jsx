@@ -1,3 +1,5 @@
+export { default as afia_logo } from "../assets/images/AfiaAssets/logoAfia.png";
+////////////////////////////////////////////////////////////////////////////////////////
 export { default as doctorthumb02 } from "../assets/images/doctors/doctor-thumb-02.jpg";
 export { default as coming_soon } from "../assets/images/coming-soon.png";
 export { default as smiling_icon } from "../assets/images/icons/smiling-icon.svg";
@@ -223,9 +225,12 @@ export { default as contact_fourteen } from "../assets/images/contact-fourteen.p
 export { default as contact_icon1 } from "../assets/images/icons/contact-icon1.svg";
 export { default as contact_icon2 } from "../assets/images/contact-icon2.png";
 export { default as contact_icon3 } from "../assets/images/contact-icon3.png";
-export { default as logo } from "../assets/images/logo.png";
-export { default as logo_svg } from "../assets/images/logo.svg";
-export { default as logo_15 } from "../assets/images/logo-15.png";
+// export { default as logo } from "../assets/images/logo.png";
+export { default as logo } from "../assets/images/AfiaAssets/logoAfia.png";
+// export { default as logo_svg } from "../assets/images/logo.svg";
+export { default as logo_svg } from "../assets/images/AfiaAssets/logoAfia.png";
+// export { default as logo_15 } from "../assets/images/logo-15.png";
+export { default as logo_15 } from "../assets/images/AfiaAssets/logoAfia.png";
 
 // export {default as eye_icon} from '../assets/images/icons/eye-icon.svg'
 export { default as doc_01 } from "../assets/images/icons/doc-01.svg";

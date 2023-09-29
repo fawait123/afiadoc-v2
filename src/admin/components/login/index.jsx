@@ -4,14 +4,7 @@ import { Link } from "react-router-dom";
 
 const Login = () => {
   const config = "/react/template";
-  // const [shouldReload, setShouldReload] = useState(true);
 
-  // useEffect(() => {
-  //   if (shouldReload) {
-  //     window.location.reload();
-  //     setShouldReload(false);
-  //   }
-  // }, [shouldReload]);
   return (
     <>
       <div className="main-wrapper login-body">

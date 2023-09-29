@@ -53,7 +53,7 @@ const DoctorSidebar = () => {
               >
                 <Link to="/doctor/my-patients">
                   <i className="fas fa-user-injured" />
-                  <span>My Patients</span>
+                  <span>My Patients</span>ks
                 </Link>
               </li>
               <li
@@ -66,7 +66,7 @@ const DoctorSidebar = () => {
                   <span>Schedule Timings</span>
                 </Link>
               </li>
-              <li
+              {/* <li
                 className={
                   pathnames.includes("/doctor/available-timing") ? "active" : ""
                 }
@@ -75,16 +75,16 @@ const DoctorSidebar = () => {
                   <i className="fas fa-clock" />
                   <span>Available Timings</span>
                 </Link>
-              </li>
-              <li
+              </li> */}
+              {/* <li
                 className={pathnames.includes("/pages/invoice") ? "active" : ""}
               >
                 <Link to="/pages/invoice">
                   <i className="fas fa-file-invoice" />
                   <span>Invoices</span>
                 </Link>
-              </li>
-              <li
+              </li> */}
+              {/* <li
                 className={
                   pathnames.includes("/doctor/account") ? "active" : ""
                 }
@@ -93,16 +93,16 @@ const DoctorSidebar = () => {
                   <i className="fas fa-file-invoice-dollar" />
                   <span>Accounts</span>
                 </Link>
-              </li>
-              <li
+              </li> */}
+              {/* <li
                 className={pathnames.includes("/doctor/review") ? "active" : ""}
               >
                 <Link to="/doctor/review">
                   <i className="fas fa-star" />
                   <span>Reviews</span>
                 </Link>
-              </li>
-              <li
+              </li> */}
+              {/* <li
                 className={
                   pathnames.includes("/doctor/chat-doctor") ? "active" : ""
                 }
@@ -112,8 +112,8 @@ const DoctorSidebar = () => {
                   <span>Message</span>
                   <small className="unread-msg">23</small>
                 </Link>
-              </li>
-              <li
+              </li> */}
+              {/* <li
                 className={
                   pathnames.includes("/doctor/profile-setting") ? "active" : ""
                 }
@@ -122,8 +122,8 @@ const DoctorSidebar = () => {
                   <i className="fas fa-user-cog" />
                   <span>Profile Settings</span>
                 </Link>
-              </li>
-              <li
+              </li> */}
+              {/* <li
                 className={
                   pathnames.includes("/doctor/social-media") ? "active" : ""
                 }
@@ -132,8 +132,8 @@ const DoctorSidebar = () => {
                   <i className="fas fa-share-alt" />
                   <span>Social Media</span>
                 </Link>
-              </li>
-              <li
+              </li> */}
+              {/* <li
                 className={
                   pathnames.includes("/doctor/doctor-change-password")
                     ? "active"
@@ -144,7 +144,7 @@ const DoctorSidebar = () => {
                   <i className="fas fa-lock" />
                   <span>Change Password</span>
                 </Link>
-              </li>
+              </li> */}
               <li className={pathnames.includes("/home") ? "active" : ""}>
                 <Link to="/home">
                   <i className="fas fa-sign-out-alt" />

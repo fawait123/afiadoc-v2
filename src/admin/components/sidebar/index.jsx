@@ -83,7 +83,7 @@ const SidebarNav = () => {
                     <span>Dashboard</span>
                   </Link>
                 </li>
-                <li
+                {/* <li
                   className={
                     pathname?.includes("/admin/appointment-list")
                       ? "active"
@@ -93,14 +93,14 @@ const SidebarNav = () => {
                   <Link to="/admin/appointment-list">
                     <i className="fe fe-layout"></i> <span>Appointments</span>
                   </Link>
-                </li>
-                <li
+                </li> */}
+                {/* <li
                   className={pathname?.includes("specialities") ? "active" : ""}
                 >
                   <Link to="/admin/specialities">
                     <i className="fe fe-users"></i> <span>Specialities</span>
                   </Link>
-                </li>
+                </li> */}
                 <li
                   className={pathname?.includes("doctor-list") ? "active" : ""}
                 >
@@ -116,12 +116,12 @@ const SidebarNav = () => {
                     <i className="fe fe-user"></i> <span>Patients</span>
                   </Link>
                 </li>
-                <li className={pathname?.includes("reviews") ? "active" : ""}>
+                {/* <li className={pathname?.includes("reviews") ? "active" : ""}>
                   <Link to="/admin/reviews">
                     <i className="fe fe-star-o"></i> <span>Reviews</span>
                   </Link>
-                </li>
-                <li
+                </li> */}
+                {/* <li
                   className={
                     pathname?.includes("transactions-list") ? "active" : ""
                   }
@@ -130,13 +130,13 @@ const SidebarNav = () => {
                     <i className="fe fe-activity"></i>
                     <span>Transactions</span>
                   </Link>
-                </li>
-                <li className={pathname?.includes("settings") ? "active" : ""}>
+                </li> */}
+                {/* <li className={pathname?.includes("settings") ? "active" : ""}>
                   <Link to="/admin/settings">
                     <i className="fe fe-vector"></i> <span> Settings</span>
                   </Link>
-                </li>
-                <li className="submenu">
+                </li> */}
+                {/* <li className="submenu">
                   <Link
                     to="#"
                     className={isSideMenu == "reports" ? "subdrop" : ""}
@@ -504,7 +504,7 @@ const SidebarNav = () => {
                       </Link>
                     </li>
                   </ul>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>

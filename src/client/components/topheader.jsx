@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 //icon
 // import { faHospital } from "@fortawesome/free-regular-svg-icons";
-import logo from "../assets/images/logo.png";
+// import logo from "../assets/images/logo.png";
+import logo from "../assets/images/AfiaAssets/logoAfia.png";
 import IMG01 from "../assets/images/doctors/doctor-thumb-02.jpg";
 import Dropdown from "react-bootstrap/Dropdown";
 // import { useEffect } from "react";

@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import logo from "../assets/images/logo.png";
+import logo from "../assets/images/AfiaAssets/logoAfia.png";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 
 const Footer = (props) => {
@@ -43,10 +43,13 @@ const Footer = (props) => {
                 <div className="row">
                   <div className="col-lg-3 col-md-4">
                     <div className="footer-widget footer-about">
-                      <div className="footer-logo">
-                        <img src={logo} alt="logo" />
+                      <div className="">
+                        <img src={logo} alt="logo" style={{ width: 100 }} />
                       </div>
-                      <div className="footer-about-content">
+                      <div
+                        className="footer-about-content"
+                        style={{ marginTop: 10 }}
+                      >
                         <p>
                           Lorem ipsum dolor sit amet, consectetur adipiscing
                           elit, sed do eiusmod tempor incididunt ut labore.

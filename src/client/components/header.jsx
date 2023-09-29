@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 // import { useHistory } from "react-router-dom";
 // import { useLocation } from "react-router-dom";
-import logo from "../assets/images/logo.png";
+import logo from "../assets/images/AfiaAssets/logoAfia.png";
 import logosvg from "../assets/images/logo.svg";
 import IMG01 from "../assets/images/doctors/doctor-thumb-02.jpg";
 // import Dropdown from "react-bootstrap/Dropdown";
@@ -29,6 +29,7 @@ import {
   logo_15,
   logo_svg,
   logo_white,
+  afia_logo,
 } from "./imagepath";
 
 import Chart from "./patients/dashboard/chart";
@@ -196,35 +197,52 @@ const Header = () => {
                   </span>
                 </Link>
                 <Link to="/home" className="navbar-brand logo">
-                {pathnames.includes("/cardiohome") ? (
-                  <img src={logo_white} className="img-fluid" alt="Logo" />
-                ) : (
-                  <img
-                    src={
-                      (pathnames === "/react/template/home6" || pathnames === "/react/template/home4")
-                        ? footer_logo
-                        : pathnames === "/paediatrichome"
-                        ? logosvg
-                        : pathnames === "/react/template/cosmeticshome"
-                        ? logo_15
-                        : pathnames === "/react/template/index10"
-                        ? logo_15
-                        : pathnames === "/react/template/home9"
-                        ? logo_03
-                        : pathnames === "/home7"
-                        ? logo_svg
-                        : logo
-                    }
-                    className="img-fluid"
-                    alt="Logo"
-                  />
-                )}
-              </Link>
+                  {pathnames.includes("/cardiohome") ? (
+                    <img
+                      src={afia_logo}
+                      alt="Logo"
+                      style={{
+                        width: 60,
+                        objectFit: "contain",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      // src={
+                      //   pathnames === "/react/template/home6" ||
+                      //   pathnames === "/react/template/home4"
+                      //     ? footer_logo
+                      //     : pathnames === "/paediatrichome"
+                      //     ? logosvg
+                      //     : pathnames === "/react/template/cosmeticshome"
+                      //     ? logo_15
+                      //     : pathnames === "/react/template/index10"
+                      //     ? logo_15
+                      //     : pathnames === "/react/template/home9"
+                      //     ? logo_03
+                      //     : pathnames === "/home7"
+                      //     ? logo_svg
+                      //     : logo
+                      // }
+                      src={afia_logo}
+                      alt="Logo"
+                      style={{
+                        width: 60,
+                        objectFit: "contain",
+                      }}
+                    />
+                  )}
+                </Link>
               </div>
               <div className="main-menu-wrapper">
                 <div className="menu-header">
                   <Link to="/home" className="menu-logo">
-                    <img src={logo} className="img-fluid" alt="Logo" />
+                    <img
+                      src={logo}
+                      className="img-fluid"
+                      alt="Logo"
+                      style={{ objectFit: "contain" }}
+                    />
                   </Link>
                   <Link
                     to="#0"
@@ -241,10 +259,13 @@ const Header = () => {
                     pathnames.includes("home4") ? "white-font" : ""
                   }`}
                 >
-                  <li
+                  {/* <li
                     className={`has-submenu megamenu  ${
-                      pathnames.includes("index") ? "active" : "" ||
-                      pathnames.includes("home") ? "active" : ""
+                      pathnames.includes("index")
+                        ? "active"
+                        : "" || pathnames.includes("home")
+                        ? "active"
+                        : ""
                     }`}
                   >
                     <Link
@@ -540,7 +561,7 @@ const Header = () => {
                         </div>
                       </li>
                     </ul>
-                  </li>
+                  </li> */}
 
                   <li
                     className={`has-submenu ${
@@ -580,7 +601,7 @@ const Header = () => {
                             Doctor Dashboard
                           </Link>
                         </li>
-                        <li
+                        {/* <li
                           className={
                             pathnames.includes("appointments") ? "active" : ""
                           }
@@ -591,7 +612,7 @@ const Header = () => {
                           >
                             Appointments
                           </Link>
-                        </li>
+                        </li> */}
                         <li
                           className={
                             pathnames.includes("schedule-timing")
@@ -670,7 +691,7 @@ const Header = () => {
                             Profile Settings
                           </Link>
                         </li>
-                        <li
+                        {/* <li
                           className={
                             pathnames.includes("review") ? "active" : ""
                           }
@@ -681,7 +702,7 @@ const Header = () => {
                           >
                             Reviews
                           </Link>
-                        </li>
+                        </li> */}
                         <li
                           className={
                             pathnames.includes("doctor-register")
@@ -696,7 +717,7 @@ const Header = () => {
                             Doctor Register
                           </Link>
                         </li>
-                        <li
+                        {/* <li
                           className={`has-submenu ${
                             pathnames.includes("doctor-blog") ? "active" : ""
                           }`}
@@ -733,7 +754,7 @@ const Header = () => {
                               </Link>
                             </li>
                           </ul>
-                        </li>
+                        </li> */}
                       </ul>
                     ) : (
                       ""
@@ -1060,7 +1081,7 @@ const Header = () => {
                       ""
                     )}
                   </li>
-                  <li
+                  {/* <li
                     className={`has-submenu ${
                       url.includes("/Pharmacy") ? "active" : ""
                     }`}
@@ -1173,8 +1194,8 @@ const Header = () => {
                     ) : (
                       ""
                     )}
-                  </li>
-                  <li
+                  </li> */}
+                  {/* <li
                     className={`has-submenu ${
                       url.includes("/pages") ? "active" : ""
                     }`}
@@ -1642,9 +1663,9 @@ const Header = () => {
                     ) : (
                       ""
                     )}
-                  </li>
+                  </li> */}
 
-                  <li
+                  {/* <li
                     className={`has-submenu ${
                       url.includes("/blog") ? "active" : ""
                     }`}
@@ -1704,7 +1725,7 @@ const Header = () => {
                     ) : (
                       ""
                     )}
-                  </li>
+                  </li> */}
                   <li className="has-submenu">
                     <Link
                       to="#"
@@ -1945,12 +1966,10 @@ const Header = () => {
                   </li>
                 </ul>
               ) : null}
-              {
-                !pathnames.includes("/patient/search-doctor1") &&
-                pathnames.includes("patient") ||
+              {(!pathnames.includes("/patient/search-doctor1") &&
+                pathnames.includes("patient")) ||
               (pathnames.includes("Pharmacy") &&
-                !pathnames.includes("/Pharmacy/Pharmacy-index")) 
-                ? (
+                !pathnames.includes("/Pharmacy/Pharmacy-index")) ? (
                 <>
                   <ul className="nav header-navbar-rht">
                     <Chart />

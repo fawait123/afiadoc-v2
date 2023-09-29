@@ -12,6 +12,7 @@ import {
   patient1,
   patient2,
   patient3,
+  afia_logo,
 } from "../imagepath";
 
 const Header = (props) => {
@@ -64,10 +65,10 @@ const Header = (props) => {
         {/* Logo */}
         <div className="header-left">
           <Link to="/admin" className="logo">
-            <img src={logo} alt="Logo" />
+            <img src={afia_logo} alt="Logo" />
           </Link>
           <Link to="/admin" className="logo logo-small">
-            <img src={logoSmall} alt="Logo" width="30" height="30" />
+            <img src={afia_logo} alt="Logo" width="30" height="30" />
           </Link>
         </div>
         <Link to="#" id="toggle_btn" onClick={handlesidebar}>

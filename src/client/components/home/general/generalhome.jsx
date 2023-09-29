@@ -39,13 +39,13 @@ function Generalhome(props) {
           <Doctor />
           {/* /Doctors Section */}
           {/* Pricing */}
-          <Priceingplan />
+          {/* <Priceingplan /> */}
           {/* /Pricing */}
           {/* Work Section */}
-          <Worksection />
+          {/* <Worksection /> */}
           {/* /Work Section */}
           {/* Articles Section */}
-          <Artical />
+          {/* <Artical /> */}
           {/* /Articles Section */}
           {/* App Section */}
           <Appsection />
@@ -57,7 +57,7 @@ function Generalhome(props) {
           <Testimonial />
           {/* /Testimonial Section */}
           {/* Partners Section */}
-          <Parentssection />
+          {/* <Parentssection /> */}
           {/* /Partners Section */}
           <Footer {...props} />
           {/* Cursor */}

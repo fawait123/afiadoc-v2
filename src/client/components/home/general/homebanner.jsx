@@ -16,7 +16,7 @@ function Homebanner() {
   const [selectedDate, setSelectedDate] = useState(null);
 
   const handleDateChange = (date) => {
-   setSelectedDate(date);
+    setSelectedDate(date);
   };
   return (
     <>
