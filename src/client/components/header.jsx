@@ -36,11 +36,10 @@ import Chart from "./patients/dashboard/chart";
 import Notification from "./patients/dashboard/notification";
 import { IMG07 } from "../components/patients/doctorprofile/img";
 import { footer_logo } from "./home/image";
+import useGlobalStore from "../../STORE/GlobalStore";
 
 const Header = () => {
-  // const history = useHistory();
-  //Aos
-  // const location = useLocation();
+  const { user, photo } = useGlobalStore((state) => state);
 
   useEffect(() => {
     AOS.init({
@@ -1983,7 +1982,11 @@ const Header = () => {
                         <span className="user-img">
                           <img
                             className="rounded-circle"
-                            src={IMG07}
+                            src={photo}
+                            style={{
+                              objectFit: "contain",
+                              backgroundPosition: "center",
+                            }}
                             width="31"
                             alt="Darren Elder"
                           />
@@ -1993,13 +1996,17 @@ const Header = () => {
                         <div className="user-header">
                           <div className="avatar avatar-sm">
                             <img
-                              src={IMG07}
+                              src={photo}
+                              style={{
+                                objectFit: "contain",
+                                backgroundPosition: "center",
+                              }}
                               alt="User Image"
                               className="avatar-img rounded-circle"
                             />
                           </div>
                           <div className="user-text">
-                            <h6>Richard Wilson</h6>
+                            <h6>{user?.name}</h6>
                             <p className="text-muted mb-0">Patient</p>
                           </div>
                         </div>

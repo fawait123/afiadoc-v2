@@ -16,7 +16,7 @@ const Register = (props) => {
 
   return (
     <>
-      <Header {...props} />
+      {/* <Header {...props} /> */}
 
       <>
         {/* Page Content */}
@@ -71,7 +71,8 @@ const Register = (props) => {
                             Already have an account?
                           </Link>
                         </div>
-                        <Link to="/patient/patientregisterstep-1"
+                        <Link
+                          to="/patient/patientregisterstep-1"
                           className="btn btn-primary w-100 btn-lg login-btn"
                           type="submit"
                         >
@@ -106,7 +107,7 @@ const Register = (props) => {
         {/* /Page Content */}
       </>
 
-      <Footer {...props} />
+      {/* <Footer {...props} /> */}
     </>
   );
 };

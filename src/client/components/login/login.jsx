@@ -1,13 +1,17 @@
 import React, { useEffect } from "react";
-// import { useHistory } from "react-router-dom";
 import loginBanner from "../../assets/images/login-banner.png";
 import { Link } from "react-router-dom";
-import Header from "../header";
-import Footer from "../footer";
-// const config = "/react/template/";
+import useGlobalStore from "../../../STORE/GlobalStore";
+import { Formik } from "formik";
+import validationLogin from "../../../validation/login";
+import ButtonCustom from "../../../componentcustom/buttonCustom";
+import httprequest from "../../../API/http";
+import Cookies from "js-cookie";
+import { useHistory } from "react-router-dom";
 
 const LoginContainer = (props) => {
-  // const history = useHistory();
+  const { setLoadingBtn, loadingBtn } = useGlobalStore((state) => state);
+  const navigate = useHistory();
 
   useEffect(() => {
     document.body.classList.add("account-page");
@@ -17,7 +21,7 @@ const LoginContainer = (props) => {
 
   return (
     <>
-      <Header {...props} />
+      {/* <Header {...props} /> */}
 
       <>
         {/* Page Content */}
@@ -41,57 +45,114 @@ const LoginContainer = (props) => {
                           Login <span>Doccure</span>
                         </h3>
                       </div>
-                      <form>
-                        <div className="form-group form-focus">
-                          <input
-                            type="email"
-                            className="form-control floating"
-                          />
-                          <label className="focus-label">Email</label>
-                        </div>
-                        <div className="form-group form-focus">
-                          <input
-                            type="password"
-                            className="form-control floating"
-                          />
-                          <label className="focus-label">Password</label>
-                        </div>
-                        <div className="text-end">
-                          <Link
-                            className="forgot-link"
-                            to="/pages/forgot-password"
-                          >
-                            Forgot Password ?
-                          </Link>
-                        </div>
-                        
-                        <Link to="/index"
-                          className="btn btn-primary w-100 btn-lg login-btn"
-                          type="submit"
-                        >
-                          Login
-                        </Link>
-                        <div className="login-or">
-                          <span className="or-line" />
-                          <span className="span-or">or</span>
-                        </div>
-                        <div className="row form-row social-login">
-                          <div className="col-6">
-                            <Link to="/index" className="btn btn-facebook w-100">
-                              <i className="fab fa-facebook-f me-1" /> Login
-                            </Link>
-                          </div>
-                          <div className="col-6">
-                            <Link to="/index" className="btn btn-google w-100">
-                              <i className="fab fa-google me-1" /> Login
-                            </Link>
-                          </div>
-                        </div>
-                        <div className="text-center dont-have">
-                          Don’t have an account?{" "}
-                          <Link to="/register">Register</Link>
-                        </div>
-                      </form>
+                      <Formik
+                        initialValues={{ username: "", password: "" }}
+                        validationSchema={validationLogin}
+                        onSubmit={async (value) => {
+                          // console.log(value);
+                          setLoadingBtn(true);
+                          await httprequest({
+                            url: "/auth/login",
+                            method: "post",
+                            data: value,
+                          })
+                            .then((res) => {
+                              const token = res.data.results.data.token;
+                              const role = res.data.results.data.user.role.name;
+                              const photo = res.data.results.data.user.photo;
+                              const userData = res.data.results.data.user;
+
+                              delete userData.photo;
+                              const user = btoa(JSON.stringify(userData));
+
+                              setLoadingBtn(false);
+                              // console.log(res);
+
+                              Cookies.set("token", token, {
+                                secure: true,
+                              });
+                              Cookies.set("user", user, {
+                                secure: true,
+                              });
+                              localStorage.setItem("photo", photo);
+                              if (role === "pengguna") {
+                                navigate.push("/patient/dashboard");
+                              } else if (role === "dokter") {
+                                navigate.push("/doctor/doctor-dashboard");
+                              } else {
+                                // navigate.push("/admin");
+                                window.location.href = "/admin";
+                              }
+                            })
+                            .catch(() => {
+                              setLoadingBtn(false);
+                            });
+                        }}
+                      >
+                        {({
+                          values,
+                          errors,
+                          touched,
+                          handleChange,
+
+                          handleSubmit,
+                        }) => (
+                          // <form onSubmit={handleSubmit}>
+                          <>
+                            <div className="form-group form-focus">
+                              <input
+                                name="username"
+                                onChange={handleChange}
+                                type="text"
+                                className="form-control floating"
+                                value={values.username}
+                              />
+
+                              <label className="focus-label">Username</label>
+                              <span className="text-danger text-sm">
+                                {errors.username &&
+                                  touched.username &&
+                                  errors.username}
+                              </span>
+                            </div>
+                            <div className="form-group form-focus">
+                              <input
+                                type="password"
+                                name="password"
+                                onChange={handleChange}
+                                value={values.password}
+                                className="form-control floating"
+                              />
+                              <label className="focus-label">Password</label>
+                              <span className="text-danger text-sm">
+                                {errors.password &&
+                                  touched.password &&
+                                  errors.password}
+                              </span>
+                            </div>
+                            <div className="text-end">
+                              <Link
+                                className="forgot-link"
+                                to="/pages/forgot-password"
+                              >
+                                Forgot Password ?
+                              </Link>
+                            </div>
+
+                            <ButtonCustom
+                              onClick={handleSubmit}
+                              title={"Login"}
+                              loading={loadingBtn}
+                            />
+
+                            <div className="text-center dont-have">
+                              Don’t have an account?{" "}
+                              <Link to="/register">Register</Link>
+                            </div>
+                          </>
+                          // </form>
+                        )}
+                      </Formik>
                     </div>
                   </div>
                 </div>
@@ -103,7 +164,7 @@ const LoginContainer = (props) => {
         {/* /Page Content */}
       </>
 
-      <Footer {...props} />
+      {/* <Footer {...props} /> */}
     </>
   );
 };
