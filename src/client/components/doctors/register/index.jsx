@@ -16,7 +16,7 @@ const DoctorRegister = (props) => {
 
   return (
     <>
-      <Header {...props} />
+      {/* <Header {...props} /> */}
       <div className="content top-space">
         <div className="container-fluid">
           <div className="row">
@@ -90,7 +90,7 @@ const DoctorRegister = (props) => {
           </div>
         </div>
       </div>
-      <Footer {...props} />
+      {/* <Footer {...props} /> */}
     </>
   );
 };

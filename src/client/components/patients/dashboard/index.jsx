@@ -27,9 +27,12 @@ import Graph4 from "../../../assets/images/shapes/graph-04.png";
 
 import Footer from "../../footer";
 import Header from "../../header.jsx";
+import useGLobalStore from "../../../../STORE/GlobalStore/index.js";
 
 const Dashboard = (props) => {
   const [count, setCount] = useState(1, 2, 3, 4);
+  const user = useGLobalStore((state) => state);
+  console.log(user);
 
   // constructor(props) {
   //   super(props);
@@ -68,7 +71,7 @@ const Dashboard = (props) => {
           <div className="row">
             <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
               <StickyBox offsetTop={20} offsetBottom={20}>
-                <DashboardSidebar />
+                <DashboardSidebar user={user?.user} />
               </StickyBox>
             </div>
             <div className="col-md-7 col-lg-8 col-xl-9">

@@ -136,7 +136,7 @@ const SidebarNav = () => {
                     <i className="fe fe-vector"></i> <span> Settings</span>
                   </Link>
                 </li> */}
-                {/* <li className="submenu">
+                <li className="submenu">
                   <Link
                     to="#"
                     className={isSideMenu == "reports" ? "subdrop" : ""}
@@ -504,7 +504,7 @@ const SidebarNav = () => {
                       </Link>
                     </li>
                   </ul>
-                </li> */}
+                </li>
               </ul>
             </div>
           </div>
