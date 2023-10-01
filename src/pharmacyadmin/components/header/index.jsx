@@ -10,17 +10,21 @@ import {
   logo,
   logoSmall,
 } from "../imagepath";
+import useGlobalStore from "../../../STORE/GlobalStore";
 // import FeatherIcon from "feather-icons-react";
 
 const Header = (props) => {
-  
   const [isMiniSidebar, setIsMiniSidebar] = useState(false);
+  const { user } = useGlobalStore((state) => state);
 
   useEffect(() => {
     const handleMouseOver = (e) => {
       e.stopPropagation();
 
-      if (isMiniSidebar && document.getElementById("toggle_btn").offsetParent !== null) {
+      if (
+        isMiniSidebar &&
+        document.getElementById("toggle_btn").offsetParent !== null
+      ) {
         const sidebar = document.querySelector(".sidebar");
         if (sidebar.contains(e.target)) {
           setIsMiniSidebar(false);
@@ -47,7 +51,6 @@ const Header = (props) => {
   //   settask1(!task1);
   // };
   const handlesidebar = () => {
-
     document.body.classList.toggle("mini-sidebar");
   };
 
@@ -249,7 +252,7 @@ const Header = (props) => {
                   className="rounded-circle"
                   src={avatar01}
                   width={31}
-                  alt="Ryan Taylor"
+                  alt={user?.name}
                 />
               </span>
             </Link>
@@ -263,8 +266,8 @@ const Header = (props) => {
                   />
                 </div>
                 <div className="user-text">
-                  <h6>Ryan Taylor</h6>
-                  <p className="text-muted mb-0">Administrator</p>
+                  <h6>{user?.name}</h6>
+                  <p className="text-muted mb-0">{user?.role?.name}</p>
                 </div>
               </div>
               <Link className="dropdown-item" to="/pharmacyadmin/profile">

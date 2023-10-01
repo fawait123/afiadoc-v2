@@ -63,7 +63,8 @@ const Dependent = (props) => {
                           href="#modal_form"
                           onClick={() => setShow(true)}
                           className="btn btn-primary btn-sm"
-                          tabIndex={0}>
+                          tabIndex={0}
+                        >
                           Add Dependent
                         </a>
                       </div>
@@ -110,14 +111,16 @@ const Dependent = (props) => {
                                     href="#edit_form"
                                     className="btn btn-sm bg-info-light"
                                     data-bs-toggle="modal"
-                                    onClick={() => setEdit(true)}>
+                                    onClick={() => setEdit(true)}
+                                  >
                                     {" "}
                                     <i className="fas fa-edit" /> Edit
                                   </a>
                                   &nbsp;
                                   <a
                                     href="#"
-                                    className="btn btn-sm bg-danger-light">
+                                    className="btn btn-sm bg-danger-light"
+                                  >
                                     <i className="fas fa-times" /> Deactive
                                   </a>
                                 </div>
@@ -146,14 +149,16 @@ const Dependent = (props) => {
                                     href="#edit_form"
                                     className="btn btn-sm bg-info-light"
                                     data-bs-toggle="modal"
-                                    onClick={() => setEdit(true)}>
+                                    onClick={() => setEdit(true)}
+                                  >
                                     {" "}
                                     <i className="fas fa-edit" /> Edit
                                   </a>
                                   &nbsp;
                                   <a
                                     href="#"
-                                    className="btn btn-sm bg-danger-light">
+                                    className="btn btn-sm bg-danger-light"
+                                  >
                                     <i className="fas fa-times" /> Deactive
                                   </a>
                                 </div>
@@ -182,14 +187,16 @@ const Dependent = (props) => {
                                     href="#edit_form"
                                     className="btn btn-sm bg-info-light"
                                     data-bs-toggle="modal"
-                                    onClick={() => setEdit(true)}>
+                                    onClick={() => setEdit(true)}
+                                  >
                                     {" "}
                                     <i className="fas fa-edit" /> Edit
                                   </a>
                                   &nbsp;
                                   <a
                                     href="#"
-                                    className="btn btn-sm bg-danger-light">
+                                    className="btn btn-sm bg-danger-light"
+                                  >
                                     <i className="fas fa-times" /> Deactive
                                   </a>
                                 </div>
@@ -218,14 +225,16 @@ const Dependent = (props) => {
                                     href="#edit_form"
                                     className="btn btn-sm bg-info-light"
                                     data-bs-toggle="modal"
-                                    onClick={() => setEdit(true)}>
+                                    onClick={() => setEdit(true)}
+                                  >
                                     {" "}
                                     <i className="fas fa-edit" /> Edit
                                   </a>
                                   &nbsp;
                                   <a
                                     href="#"
-                                    className="btn btn-sm bg-danger-light">
+                                    className="btn btn-sm bg-danger-light"
+                                  >
                                     <i className="fas fa-times" /> Deactive
                                   </a>
                                 </div>
@@ -247,7 +256,8 @@ const Dependent = (props) => {
         show={show}
         onHide={() => setShow(false)}
         className="modal"
-        style={{ marginTop: "80px" }}>
+        style={{ marginTop: "80px" }}
+      >
         <Modal.Header closeButton>
           <Modal.Title>
             <h5 className="modal-title">Add new member</h5>
@@ -259,7 +269,8 @@ const Dependent = (props) => {
               action="#"
               encType="multipart/form-data"
               autoComplete="off"
-              method="post">
+              method="post"
+            >
               <div className="modal-body">
                 <div className="form-group">
                   <label className="control-label mb-10">
@@ -321,21 +332,24 @@ const Dependent = (props) => {
         aria-modal="true"
         // eslint-disable-next-line react/no-unknown-property
         show={edit}
-        onClick={() => setEdit(false)}>
+        onClick={() => setEdit(false)}
+      >
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <form
               action="#"
               encType="multipart/form-data"
               autoComplete="off"
-              method="post">
+              method="post"
+            >
               <div className="modal-header">
                 <h5 className="modal-title">Edit member</h5>
                 <button
                   type="button"
                   className="close"
                   data-bs-dismiss="modal"
-                  aria-label="Close">
+                  aria-label="Close"
+                >
                   <span aria-hidden="true">×</span>
                 </button>
               </div>

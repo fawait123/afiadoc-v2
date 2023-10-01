@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Doctor1, Doctor2, Doctor3, Doctor4, Doctor5 } from "../image";
 import OwlCarousel from "react-owl-carousel";
@@ -7,8 +7,10 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
+import { Spin } from "antd";
+import { IMAGEPATH } from "../../../../config";
 
-function Doctor() {
+function Doctor({ datas, loading }) {
   //Aos
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
@@ -68,214 +70,79 @@ function Doctor() {
           </div>
           <div className="doctor-slider-one owl-theme aos" data-aos="fade-up">
             {/* Doctor Item */}
-            <OwlCarousel {...doctersettings}>
-              <div className="item">
-                <div className="doctor-profile-widget">
-                  <div className="doc-pro-img">
-                    <Link to="/patient/doctor-profile">
-                      <div className="doctor-profile-img">
-                        <img src={Doctor3} className="img-fluid" alt="" />
-                      </div>
-                    </Link>
-                    <div className="doctor-amount">
-                      <span>$ 200</span>
-                    </div>
-                  </div>
-                  <div className="doc-content">
-                    <div className="doc-pro-info">
-                      <div className="doc-pro-name">
-                        <Link to="/patient/doctor-profile">
-                          Dr. Ruby Perrin
-                        </Link>
-                        <p>Cardiology</p>
-                      </div>
-                      <div className="reviews-ratings">
-                        <p>
-                          <span>
-                            <i className="fas fa-star" /> 4.5
-                          </span>{" "}
-                          (35)
-                        </p>
-                      </div>
-                    </div>
-                    <div className="doc-pro-location">
-                      <p>
-                        <i>
-                          <FeatherIcon icon="map-pin" />
-                        </i>{" "}
-                        Newyork, USA
-                      </p>
-                    </div>
-                  </div>
-                </div>
+            {loading ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Spin size="large" />
               </div>
-              {/* /Doctor Item */}
-              {/* Doctor Item */}
-              <div className="item">
-                <div className="doctor-profile-widget">
-                  <div className="doc-pro-img">
-                    <Link to="/patient/doctor-profile">
-                      <div className="doctor-profile-img">
-                        <img src={Doctor4} className="img-fluid" alt="" />
-                      </div>
-                    </Link>
-                    <div className="doctor-amount">
-                      <span>$ 360</span>
-                    </div>
-                  </div>
-                  <div className="doc-content">
-                    <div className="doc-pro-info">
-                      <div className="doc-pro-name">
-                        <Link to="/patient/doctor-profile">
-                          Dr. Darren Elder
-                        </Link>
-                        <p>Neurology</p>
-                      </div>
-                      <div className="reviews-ratings">
-                        <p>
-                          <span>
-                            <i className="fas fa-star" /> 4.0
-                          </span>{" "}
-                          (20)
-                        </p>
-                      </div>
-                    </div>
-                    <div className="doc-pro-location">
-                      <p>
-                        <i>
-                          <FeatherIcon icon="map-pin" />
-                        </i>{" "}
-                        Florida, USA
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* /Doctor Item */}
-              {/* Doctor Item */}
-              <div className="item">
-                <div className="doctor-profile-widget">
-                  <div className="doc-pro-img">
-                    <Link to="/patient/doctor-profile">
-                      <div className="doctor-profile-img">
-                        <img src={Doctor5} className="img-fluid" alt="" />
-                      </div>
-                    </Link>
-                    <div className="doctor-amount">
-                      <span>$ 450</span>
-                    </div>
-                  </div>
-                  <div className="doc-content">
-                    <div className="doc-pro-info">
-                      <div className="doc-pro-name">
-                        <Link to="/patient/doctor-profile">
-                          Dr. Sofia Brient
-                        </Link>
-                        <p>Urology</p>
-                      </div>
-                      <div className="reviews-ratings">
-                        <p>
-                          <span>
-                            <i className="fas fa-star" /> 4.5
-                          </span>{" "}
-                          (30)
-                        </p>
+            ) : datas?.length > 0 ? (
+              <OwlCarousel {...doctersettings}>
+                {datas.map((item) => {
+                  return (
+                    <div className="item" key={item?.id}>
+                      <div className="doctor-profile-widget">
+                        <div className="doc-pro-img">
+                          <Link to="/patient/doctor-profile">
+                            <div className="doctor-profile-img">
+                              <img
+                                src={IMAGEPATH + item?.photos}
+                                className="img-fluid"
+                                alt=""
+                              />
+                            </div>
+                          </Link>
+                          <div className="doctor-amount">
+                            <span>
+                              IDR{" "}
+                              {item?.prices
+                                ?.find((el) => el.type == "booking")
+                                ?.price?.toLocaleString("id", "ID")}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="doc-content">
+                          <div className="doc-pro-info">
+                            <div className="doc-pro-name">
+                              <Link to="/patient/doctor-profile">
+                                Dr. {item?.name}
+                              </Link>
+                              <p>{item?.specialist?.name}</p>
+                            </div>
+                            <div className="reviews-ratings">
+                              <p>
+                                <span>
+                                  <i className="fas fa-star" /> 4.5
+                                </span>{" "}
+                                (35)
+                              </p>
+                            </div>
+                          </div>
+                          <div className="doc-pro-location">
+                            <p>
+                              <i>
+                                <FeatherIcon icon="map-pin" />
+                              </i>{" "}
+                              {item?.addresses.length > 0
+                                ? item?.addresses[0]?.subdistrict?.name +
+                                  "," +
+                                  item?.addresses[0]?.province?.name
+                                : "lokasi tidak ditentukan"}
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div className="doc-pro-location">
-                      <p>
-                        <i>
-                          <FeatherIcon icon="map-pin" />
-                        </i>{" "}
-                        Georgia, USA
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* /Doctor Item */}
-              {/* Doctor Item */}
-              <div className="item">
-                <div className="doctor-profile-widget">
-                  <div className="doc-pro-img">
-                    <Link to="/patient/doctor-profile">
-                      <div className="doctor-profile-img">
-                        <img src={Doctor2} className="img-fluid" alt="" />
-                      </div>
-                    </Link>
-                    <div className="doctor-amount">
-                      <span>$ 570</span>
-                    </div>
-                  </div>
-                  <div className="doc-content">
-                    <div className="doc-pro-info">
-                      <div className="doc-pro-name">
-                        <Link to="/patient/doctor-profile">
-                          Dr. Paul Richard
-                        </Link>
-                        <p>Orthopedic</p>
-                      </div>
-                      <div className="reviews-ratings">
-                        <p>
-                          <span>
-                            <i className="fas fa-star" /> 4.3
-                          </span>{" "}
-                          (45)
-                        </p>
-                      </div>
-                    </div>
-                    <div className="doc-pro-location">
-                      <p>
-                        <i>
-                          <FeatherIcon icon="map-pin" />
-                        </i>{" "}
-                        Michigan, USA
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* /Doctor Item */}
-              {/* Doctor Item */}
-              <div className="item">
-                <div className="doctor-profile-widget">
-                  <div className="doc-pro-img">
-                    <Link to="/patient/doctor-profile">
-                      <div className="doctor-profile-img">
-                        <img src={Doctor1} className="img-fluid" alt="" />
-                      </div>
-                    </Link>
-                    <div className="doctor-amount">
-                      <span>$ 880</span>
-                    </div>
-                  </div>
-                  <div className="doc-content">
-                    <div className="doc-pro-info">
-                      <div className="doc-pro-name">
-                        <Link to="/patient/doctor-profile">Dr. John Doe</Link>
-                        <p>Dentist</p>
-                      </div>
-                      <div className="reviews-ratings">
-                        <p>
-                          <span>
-                            <i className="fas fa-star" /> 4.4
-                          </span>{" "}
-                          (50)
-                        </p>
-                      </div>
-                    </div>
-                    <div className="doc-pro-location">
-                      <p>
-                        <i>
-                          <FeatherIcon icon="map-pin" />
-                        </i>{" "}
-                        California, USA
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </OwlCarousel>
+                  );
+                })}
+              </OwlCarousel>
+            ) : (
+              <p>Tidak ada data dokter terdaftar</p>
+            )}
             {/* /Doctor Item */}
           </div>
         </div>

@@ -1784,6 +1784,7 @@ const Header = () => {
                   ) : null}
                   {(!pathnames.includes("/index10") &&
                     pathnames.includes("index")) ||
+                  pathnames.includes("/") ||
                   pathnames.includes("/login") ||
                   pathnames.includes("/register") ||
                   pathnames.includes("blog") ||

@@ -83,6 +83,59 @@ const SidebarNav = () => {
                     <span>Dashboard</span>
                   </Link>
                 </li>
+                <li
+                  className={pathname?.includes("doctor-list") ? "active" : ""}
+                >
+                  <Link to="/admin/doctor-list">
+                    <i className="fe fe-user-plus"></i>
+                    <span>Dokter</span>
+                  </Link>
+                </li>
+                <li
+                  className={pathname?.includes("patient-list") ? "active" : ""}
+                >
+                  <Link to="/admin/patient-list">
+                    <i className="fe fe-user"></i> <span>Pasien</span>
+                  </Link>
+                </li>
+                <li className="submenu">
+                  <Link
+                    to="#"
+                    className={isSideMenu == "core" ? "subdrop" : ""}
+                    onClick={() =>
+                      toggleSidebar(isSideMenu == "core" ? "" : "core")
+                    }
+                  >
+                    <i className="fe fe-document"></i>
+                    <span> Core</span> <span className="menu-arrow"></span>
+                  </Link>
+                  {isSideMenu == "core" ? (
+                    <ul
+                      style={{
+                        display: isSideMenu == "core" ? "block" : "none",
+                      }}
+                    >
+                      <li>
+                        <Link
+                          to="/admin/role"
+                          className={pathname?.includes("role") ? "active" : ""}
+                        >
+                          Role
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/admin/user"
+                          className={pathname?.includes("user") ? "active" : ""}
+                        >
+                          User
+                        </Link>
+                      </li>
+                    </ul>
+                  ) : (
+                    ""
+                  )}
+                </li>
                 {/* <li
                   className={
                     pathname?.includes("/admin/appointment-list")
@@ -101,21 +154,6 @@ const SidebarNav = () => {
                     <i className="fe fe-users"></i> <span>Specialities</span>
                   </Link>
                 </li> */}
-                <li
-                  className={pathname?.includes("doctor-list") ? "active" : ""}
-                >
-                  <Link to="/admin/doctor-list">
-                    <i className="fe fe-user-plus"></i>
-                    <span>Doctors</span>
-                  </Link>
-                </li>
-                <li
-                  className={pathname?.includes("patient-list") ? "active" : ""}
-                >
-                  <Link to="/admin/patient-list">
-                    <i className="fe fe-user"></i> <span>Patients</span>
-                  </Link>
-                </li>
                 {/* <li className={pathname?.includes("reviews") ? "active" : ""}>
                   <Link to="/admin/reviews">
                     <i className="fe fe-star-o"></i> <span>Reviews</span>
@@ -136,47 +174,15 @@ const SidebarNav = () => {
                     <i className="fe fe-vector"></i> <span> Settings</span>
                   </Link>
                 </li> */}
-                <li className="submenu">
-                  <Link
-                    to="#"
-                    className={isSideMenu == "reports" ? "subdrop" : ""}
-                    onClick={() =>
-                      toggleSidebar(isSideMenu == "reports" ? "" : "reports")
-                    }
-                  >
-                    <i className="fe fe-document"></i>
-                    <span> Reports</span> <span className="menu-arrow"></span>
-                  </Link>
-                  {isSideMenu == "reports" ? (
-                    <ul
-                      style={{
-                        display: isSideMenu == "reports" ? "block" : "none",
-                      }}
-                    >
-                      <li>
-                        <Link
-                          to="/admin/invoicerepot"
-                          className={
-                            pathname?.includes("invoicerepot") ? "active" : ""
-                          }
-                        >
-                          Invoice Report
-                        </Link>
-                      </li>
-                    </ul>
-                  ) : (
-                    ""
-                  )}
-                </li>
-                <li className="menu-title">
+                {/* <li className="menu-title">
                   <span>Pages</span>
                 </li>
                 <li className={pathname?.includes("profile") ? "active" : ""}>
                   <Link to="/admin/profile">
                     <i className="fe fe-user-plus"></i> <span>Profile</span>
                   </Link>
-                </li>
-                <li className="submenu">
+                </li> */}
+                {/* <li className="submenu">
                   <Link
                     to="#"
                     className={isSideMenu == "authentication" ? "subdrop" : ""}
@@ -504,7 +510,7 @@ const SidebarNav = () => {
                       </Link>
                     </li>
                   </ul>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>

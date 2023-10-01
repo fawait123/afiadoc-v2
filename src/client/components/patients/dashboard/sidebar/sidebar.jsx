@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import IMG01 from "../../../../assets/images/patient.jpg";
 import httpRequest from "../../../../../API/http";
 import moment from "moment";
 import { toBase64 } from "../../../../../globalfunction";
@@ -145,7 +144,7 @@ export const DashboardSidebar = () => {
             <li className={pathname.includes("/dependent") ? "active" : ""}>
               <Link to="/patient/dependent">
                 <i className="fas fa-users"></i>
-                <span>Dependent</span>
+                <span>Pasien</span>
               </Link>
             </li>
             <li className={pathname.includes("/chat-doctor") ? "active" : ""}>
