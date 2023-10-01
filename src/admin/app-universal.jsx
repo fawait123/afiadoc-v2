@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useContext, useMemo } from "react";
-import config from 'config';
-
+import config from "config";
 
 import { Route, BrowserRouter, Switch } from "react-router-dom";
 import Header from "./components/header/index";
@@ -43,9 +42,13 @@ import ProductCategories from "./components/productlist/ProductCategories";
 
 import { Appcontext } from "../approuter";
 import InvoiceReportList from "./components/Reports/InvoiceReport/InvoiceReportList";
+import Role from "./components/role";
+import User from "./components/user";
+import useGlobalStore from "../STORE/GlobalStore";
 
 const AppUniversal = function (props) {
   const [menu, setMenu] = useState(false);
+  const { token } = useGlobalStore((state) => state);
   const toggleMobileMenu = () => {
     setMenu(!menu);
   };
@@ -68,12 +71,9 @@ const AppUniversal = function (props) {
       setIsAuth("user");
     }
   }, [location]);
-
   return (
-    <BrowserRouter basename={`${config.publicPath}`}>
-
-
-    <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
+    <BrowserRouter>
+      <div className={`main-wrapper ${menu ? "slide-nav" : ""}`}>
         {isAuth !== "admin" && (
           <Route
             render={(props) => (
@@ -81,70 +81,81 @@ const AppUniversal = function (props) {
             )}
           />
         )}
-        <Switch>
-          <Route path="/admin/login" exact component={Login} />
-          <Route path="/admin/register" exact component={Register} />
-          <Route
-            path="/admin/forgotPassword"
-            exact
-            component={ForgotPassword}
-          />
-          <Route path="/admin/lockscreen" exact component={Lockscreen} />
-          <Route path="/admin" exact component={Dashboard} />
-          <Route
-            path="/admin/appointment-list"
-            exact
-            component={Appointments}
-          />
-          <Route path="/admin/specialities" exact component={Specialities} />
-          <Route path="/admin/doctor-list" exact component={Doctors} />
-          <Route path="/admin/patient-list" exact component={Patients} />
-          <Route path="/admin/reviews" exact component={Reviews} />
-          <Route
-            path="/admin/transactions-list"
-            exact
-            component={Transaction}
-          />
-          <Route path="/admin/settings" exact component={Settings} />
-          <Route path="/admin/invoicerepot" exact component={InvoiceReport} />
-          <Route path="/admin/invoice" exact component={InvoiceReportList} />
-          <Route path="/admin/blog" exact component={Blog} />
-          <Route path="/admin/blog-details" exact component={BlogDetails} />
-          <Route path="/admin/add-blog" exact component={AddBlog} />
-          <Route path="/admin/edit-blog" exact component={EditBlog} />
-          <Route path="/admin/pending-blog" exact component={PendingBlog} />
-          <Route path="/admin/profile" exact component={Profile} />
-          <Route path="/admin/product-list" exact component={ProductList} />
-          <Route path="/admin/pharmacy-list" exact component={PharmacyList} />
-          <Route path="/admin/pharmacy-category" exact component={Categories} />
-          {/* <Route path="/admin/invoice" exact component={Invoice} /> */}
+        {token ? (
+          <Switch>
+            <Route path="/admin/login" exact component={Login} />
+            <Route path="/admin/register" exact component={Register} />
+            <Route
+              path="/admin/forgotPassword"
+              exact
+              component={ForgotPassword}
+            />
+            <Route path="/admin/lockscreen" exact component={Lockscreen} />
+            <Route path="/admin" exact component={Dashboard} />
+            <Route
+              path="/admin/appointment-list"
+              exact
+              component={Appointments}
+            />
+            <Route path="/admin/specialities" exact component={Specialities} />
+            <Route path="/admin/doctor-list" exact component={Doctors} />
 
-          <Route path="/admin/404" exact component={Error} />
-          <Route path="/admin/500" exact component={ErrorPage} />
-          <Route path="/admin/blank-page" exact component={BlankPage} />
-          <Route path="/admin/components" exact component={Components} />
-          <Route path="/admin/basic-input" exact component={BasicInput} />
-          <Route path="/admin/form-input-group" exact component={FormInput} />
-          <Route
-            path="/admin/form-horizontal"
-            exact
-            component={FormHorizontal}
-          />
-          <Route path="/admin/form-vertical" exact component={FormVertical} />
-          <Route path="/admin/form-mask" exact component={FormMask} />
-          <Route
-            path="/admin/form-validation"
-            exact
-            component={FormValidation}
-          />
-          <Route path="/admin/tables-basic" exact component={BasicTables} />
-          <Route path="/admin/data-tables" exact component={DataTables} />
-          <Route
-            path="/admin/product-category"
-            exact
-            component={ProductCategories}
-          />
-        </Switch>
+            <Route path="/admin/patient-list" exact component={Patients} />
+            <Route path="/admin/role" exact component={Role} />
+            <Route path="/admin/user" exact component={User} />
+            <Route path="/admin/reviews" exact component={Reviews} />
+            <Route
+              path="/admin/transactions-list"
+              exact
+              component={Transaction}
+            />
+            <Route path="/admin/settings" exact component={Settings} />
+            <Route path="/admin/invoicerepot" exact component={InvoiceReport} />
+            <Route path="/admin/invoice" exact component={InvoiceReportList} />
+            <Route path="/admin/blog" exact component={Blog} />
+            <Route path="/admin/blog-details" exact component={BlogDetails} />
+            <Route path="/admin/add-blog" exact component={AddBlog} />
+            <Route path="/admin/edit-blog" exact component={EditBlog} />
+            <Route path="/admin/pending-blog" exact component={PendingBlog} />
+            <Route path="/admin/profile" exact component={Profile} />
+            <Route path="/admin/product-list" exact component={ProductList} />
+            <Route path="/admin/pharmacy-list" exact component={PharmacyList} />
+            <Route
+              path="/admin/pharmacy-category"
+              exact
+              component={Categories}
+            />
+            {/* <Route path="/admin/invoice" exact component={Invoice} /> */}
+
+            <Route path="/admin/404" exact component={Error} />
+            <Route path="/admin/500" exact component={ErrorPage} />
+            <Route path="/admin/blank-page" exact component={BlankPage} />
+            <Route path="/admin/components" exact component={Components} />
+            <Route path="/admin/basic-input" exact component={BasicInput} />
+            <Route path="/admin/form-input-group" exact component={FormInput} />
+            <Route
+              path="/admin/form-horizontal"
+              exact
+              component={FormHorizontal}
+            />
+            <Route path="/admin/form-vertical" exact component={FormVertical} />
+            <Route path="/admin/form-mask" exact component={FormMask} />
+            <Route
+              path="/admin/form-validation"
+              exact
+              component={FormValidation}
+            />
+            <Route path="/admin/tables-basic" exact component={BasicTables} />
+            <Route path="/admin/data-tables" exact component={DataTables} />
+            <Route
+              path="/admin/product-category"
+              exact
+              component={ProductCategories}
+            />
+          </Switch>
+        ) : (
+          (window.location.href = "/login")
+        )}
       </div>
     </BrowserRouter>
   );

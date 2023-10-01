@@ -7,15 +7,15 @@ import { Link } from "react-router-dom";
 import {
   avatar01,
   doctor_thumb_01,
-  logo,
-  logoSmall,
   patient1,
   patient2,
   patient3,
   afia_logo,
 } from "../imagepath";
+import useGlobalStore from "../../../STORE/GlobalStore";
 
 const Header = (props) => {
+  const { user, photo } = useGlobalStore((state) => state);
   // let pathname = props.location.pathname;
   // const { isAuth, setIsAuth } = useContext(Appcontext);
   // const [task, settask] = useState(true);
@@ -238,9 +238,9 @@ const Header = (props) => {
               <span className="user-img">
                 <img
                   className="rounded-circle"
-                  src={avatar01}
+                  src={photo}
                   width={31}
-                  alt="Ryan Taylor"
+                  alt={user?.name}
                 />
               </span>
             </Link>
@@ -248,14 +248,14 @@ const Header = (props) => {
               <div className="user-header">
                 <div className="avatar avatar-sm">
                   <img
-                    src={avatar01}
+                    src={photo}
                     alt="User Image"
                     className="avatar-img rounded-circle"
                   />
                 </div>
                 <div className="user-text">
-                  <h6>Ryan Taylor</h6>
-                  <p className="text-muted mb-0">Administrator</p>
+                  <h6>{user?.name}</h6>
+                  <p className="text-muted mb-0">{user?.role?.name}</p>
                 </div>
               </div>
               <Link className="dropdown-item" to="/admin/profile">

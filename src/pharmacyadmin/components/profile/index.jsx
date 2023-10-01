@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import SidebarNav from '../sidebar';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import SidebarNav from "../sidebar";
+import { Link } from "react-router-dom";
 import { avatar01 } from "../imagepath";
-import DatePicker from 'react-datepicker';
-
+import DatePicker from "react-datepicker";
 
 const Profile = () => {
   const [selectedDate1, setSelectedDate1] = useState(new Date());
@@ -51,8 +50,9 @@ const Profile = () => {
                       <i className="fa fa-map-marker" /> Florida, United States
                     </div>
                     <div className="about-text">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                      do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua.
                     </div>
                   </div>
                   <div className="col-auto profile-btn">
@@ -196,7 +196,8 @@ const Profile = () => {
                                           selected={selectedDate1}
                                           onChange={handleDateChange1}
                                           dateFormat="dd/MM/yyyy"
-                                          showDayMonthYearPicker />
+                                          showDayMonthYearPicker
+                                        />
                                       </div>
                                     </div>
                                   </div>
@@ -330,14 +331,8 @@ const Profile = () => {
       </div>
       {/* /Page Wrapper */}
       {/* /Main Wrapper */}
-
-
-
-
     </div>
-
   );
-}
-
+};
 
 export default Profile;

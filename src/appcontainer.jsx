@@ -226,7 +226,7 @@ const AppContainer = function (props) {
     }, []);
 
     return (
-      <Router basename={`${config.publicPath}`}>
+      <Router>
         {" "}
         {url === "admin" ? (
           <div>
@@ -282,6 +282,7 @@ const AppContainer = function (props) {
               <Route path="/signup" exact component={Signup} />
 
               {/* home */}
+              <Route path="/" exact component={Generalhome} />
               <Route path="/home" exact component={Home} />
               <Route path="/index" exact component={Generalhome} />
               <Route path="/homeslider1" exact component={HomeSlider1} />
@@ -668,6 +669,7 @@ const AppContainer = function (props) {
               <Route path="/bookingsuccess" exact component={Bookingsuccess} />
               <Route path="/patientdetails" exact component={Patientdetails} />
               <Route path="/loginemail" exact component={Loginemail} />
+              <Route path="*" exact component={Error} />
             </Switch>
           </div>
         )}

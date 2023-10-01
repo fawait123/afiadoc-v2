@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Table } from "antd";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-daterangepicker/daterangepicker.css";
@@ -22,6 +22,7 @@ import {
   patient9,
 } from "../imagepath";
 import { Link } from "react-router-dom";
+import httpRequest from "../../../API/http";
 
 const Patients = () => {
   const data = [
@@ -237,6 +238,18 @@ const Patients = () => {
       sorter: (a, b) => a.Paid.length - b.Paid.length,
     },
   ];
+  const getData = async () => {
+    await httpRequest({
+      url: "/admin/patient",
+      method: "get",
+    }).then((response) => {
+      console.log("res", response);
+    });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <>
       <SidebarNav />

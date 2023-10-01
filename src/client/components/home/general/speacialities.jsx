@@ -13,8 +13,10 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Link } from "react-router-dom";
+import { Spin } from "antd";
+import { IMAGEPATH } from "../../../../config";
 
-function Speacialities() {
+function Speacialities({ datas, loading }) {
   //Aos
 
   useEffect(() => {
@@ -77,78 +79,36 @@ function Speacialities() {
             className="specialities-slider-one owl-theme aos"
             data-aos="fade-up"
           >
-            <OwlCarousel {...specialitysettings}>
-              <div className="item">
-                <div className="specialities-item">
-                  <div className="specialities-img">
-                    <span>
-                      <img src={specialities_01} alt="" />
-                    </span>
-                  </div>
-                  <p>Cardiology</p>
-                </div>
+            {loading ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Spin />
               </div>
-              <div className="item">
-                <div className="specialities-item">
-                  <div className="specialities-img">
-                    <span>
-                      <img src={specialities_02} alt="" />
-                    </span>
-                  </div>
-                  <p>Neurology</p>
-                </div>
-              </div>
-              <div className="item">
-                <div className="specialities-item">
-                  <div className="specialities-img">
-                    <span>
-                      <img src={specialities_03} alt="" />
-                    </span>
-                  </div>
-                  <p>Urology</p>
-                </div>
-              </div>
-              <div className="item">
-                <div className="specialities-item">
-                  <div className="specialities-img">
-                    <span>
-                      <img src={specialities_04} alt="" />
-                    </span>
-                  </div>
-                  <p>Orthopedic</p>
-                </div>
-              </div>
-              <div className="item">
-                <div className="specialities-item">
-                  <div className="specialities-img">
-                    <span>
-                      <img src={specialities_05} alt="" />
-                    </span>
-                  </div>
-                  <p>Dentist</p>
-                </div>
-              </div>
-              <div className="item">
-                <div className="specialities-item">
-                  <div className="specialities-img">
-                    <span>
-                      <img src={specialities_06} alt="" />
-                    </span>
-                  </div>
-                  <p>Ophthalmology</p>
-                </div>
-              </div>
-              <div className="item">
-                <div className="specialities-item">
-                  <div className="specialities-img">
-                    <span>
-                      <img src={specialities_02} alt="" />
-                    </span>
-                  </div>
-                  <p>Neurology</p>
-                </div>
-              </div>
-            </OwlCarousel>
+            ) : datas?.length > 0 ? (
+              <OwlCarousel {...specialitysettings}>
+                {datas?.map((item) => {
+                  return (
+                    <div className="item" key={item?.id}>
+                      <div className="specialities-item">
+                        <div className="specialities-img">
+                          <span>
+                            <img src={IMAGEPATH + item?.picture} alt="" />
+                          </span>
+                        </div>
+                        <p>{item?.name}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </OwlCarousel>
+            ) : (
+              <p>Data spesialis tidak ada</p>
+            )}
           </div>
           <div className="specialities-btn aos" data-aos="fade-up">
             <Link to="/patient/search-doctor1" className="btn">

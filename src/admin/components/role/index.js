@@ -10,7 +10,7 @@ import moment from "moment";
 import useGlobalStore from "../../../STORE/GlobalStore";
 import { IMAGEPATH } from "../../../config";
 
-const Doctors = () => {
+const Role = () => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
@@ -19,71 +19,23 @@ const Doctors = () => {
 
   const columns = [
     {
-      title: "Nama Dokter",
-      dataIndex: "name",
+      title: "Nama",
+      dataIndex: "display_name",
       render: (text, record) => (
         <>
-          <Link className="avatar mx-2" to={`/admin/profile?id=${record?.id}`}>
-            <img className="rounded-circle" src={IMAGEPATH + record?.photos} />
+          <Link to={`/admin/profile?id=${record?.id}`}>
+            {text?.toUpperCase()}
           </Link>
-          <Link to={`/admin/profile?id=${record?.id}`}>{text}</Link>
         </>
       ),
       sorter: (a, b) => a.DoctorName.length - b.DoctorName.length,
-    },
-    {
-      title: "Spesialis",
-      dataIndex: "specialist",
-      sorter: (a, b) => a.Speciality.length - b.Speciality.length,
-      render: (record) => {
-        return (
-          <>
-            <span>{record?.name}</span>
-          </>
-        );
-      },
-    },
-    {
-      title: "Tanggal Daftar",
-      render: (record) => (
-        <>
-          <span className="user-name">
-            {moment(record.createdAt).format("DD MM YYYY")}
-          </span>
-          <br />
-          <span>{moment(record.createdAt).format("hh:mm:ss")}</span>
-        </>
-      ),
-      sorter: (a, b) => a.length - b.length,
-    },
-    {
-      title: "Status Akun",
-      render: (text, record) => {
-        return (
-          <div className="status-toggle">
-            <input
-              id={`rating${record?.id}`}
-              className="check"
-              type="checkbox"
-              checked={record?.user?.is_active}
-            />
-            <label
-              htmlFor={`rating${record?.id}`}
-              className="checktoggle checkbox-bg"
-            >
-              checkbox
-            </label>
-          </div>
-        );
-      },
-      sorter: (a, b) => a.AccountStatus.length - b.AccountStatus.length,
     },
   ];
 
   const getData = async () => {
     setLoadingTable(true);
     await httpRequest({
-      url: "/admin/doctor",
+      url: "/admin/role",
       method: "get",
       params: {
         page,
@@ -116,12 +68,12 @@ const Doctors = () => {
           <div className="page-header">
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title">List of Doctors</h3>
+                <h3 className="page-title">List of Role</h3>
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
                     <Link to="/admin">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">List of Doctors</li>
+                  <li className="breadcrumb-item active">List of Role</li>
                 </ul>
               </div>
             </div>
@@ -165,4 +117,4 @@ const Doctors = () => {
   );
 };
 
-export default Doctors;
+export default Role;

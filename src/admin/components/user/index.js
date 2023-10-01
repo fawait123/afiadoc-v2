@@ -6,11 +6,9 @@ import { itemRender, onShowSizeChange } from "../paginationfunction";
 import SidebarNav from "../sidebar";
 import { Link } from "react-router-dom";
 import httpRequest from "../../../API/http";
-import moment from "moment";
 import useGlobalStore from "../../../STORE/GlobalStore";
-import { IMAGEPATH } from "../../../config";
 
-const Doctors = () => {
+const User = () => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
@@ -19,12 +17,15 @@ const Doctors = () => {
 
   const columns = [
     {
-      title: "Nama Dokter",
+      title: "Nama",
       dataIndex: "name",
       render: (text, record) => (
         <>
           <Link className="avatar mx-2" to={`/admin/profile?id=${record?.id}`}>
-            <img className="rounded-circle" src={IMAGEPATH + record?.photos} />
+            <img
+              className="rounded-circle"
+              src={record?.photo ? record?.photo : "/logo.png"}
+            />
           </Link>
           <Link to={`/admin/profile?id=${record?.id}`}>{text}</Link>
         </>
@@ -32,29 +33,39 @@ const Doctors = () => {
       sorter: (a, b) => a.DoctorName.length - b.DoctorName.length,
     },
     {
-      title: "Spesialis",
-      dataIndex: "specialist",
+      title: "Username",
+      dataIndex: "username",
       sorter: (a, b) => a.Speciality.length - b.Speciality.length,
       render: (record) => {
         return (
           <>
-            <span>{record?.name}</span>
+            <span>{record}</span>
           </>
         );
       },
     },
     {
-      title: "Tanggal Daftar",
-      render: (record) => (
-        <>
-          <span className="user-name">
-            {moment(record.createdAt).format("DD MM YYYY")}
-          </span>
-          <br />
-          <span>{moment(record.createdAt).format("hh:mm:ss")}</span>
-        </>
-      ),
-      sorter: (a, b) => a.length - b.length,
+      title: "Email",
+      dataIndex: "email",
+      sorter: (a, b) => a.Speciality.length - b.Speciality.length,
+      render: (record) => {
+        return (
+          <>
+            <span>{record}</span>
+          </>
+        );
+      },
+    },
+    {
+      title: "Akses",
+      sorter: (a, b) => a.Speciality.length - b.Speciality.length,
+      render: (record) => {
+        return (
+          <>
+            <span>{record?.role?.name}</span>
+          </>
+        );
+      },
     },
     {
       title: "Status Akun",
@@ -65,7 +76,7 @@ const Doctors = () => {
               id={`rating${record?.id}`}
               className="check"
               type="checkbox"
-              checked={record?.user?.is_active}
+              checked={record?.is_active}
             />
             <label
               htmlFor={`rating${record?.id}`}
@@ -80,14 +91,14 @@ const Doctors = () => {
     },
   ];
 
-  const getData = async () => {
+  const getData = async (current = null, pageSize = null) => {
     setLoadingTable(true);
     await httpRequest({
-      url: "/admin/doctor",
+      url: "/admin/user",
       method: "get",
       params: {
-        page,
-        limit,
+        page: current == null ? page : current,
+        limit: pageSize == null ? limit : pageSize,
       },
     })
       .then((response) => {
@@ -106,7 +117,7 @@ const Doctors = () => {
 
   useEffect(() => {
     getData();
-  }, [page, limit]);
+  }, []);
   return (
     <>
       <SidebarNav />
@@ -143,9 +154,8 @@ const Doctors = () => {
                         showSizeChanger: true,
                         onShowSizeChange: onShowSizeChange,
                         itemRender: itemRender,
-                        onChange: (page, pageSize) => {
-                          setPage(page);
-                          setLimit(pageSize);
+                        onChange: (current, pageSize) => {
+                          getData(current, pageSize);
                         },
                       }}
                       style={{ overflowX: "auto" }}
@@ -165,4 +175,4 @@ const Doctors = () => {
   );
 };
 
-export default Doctors;
+export default User;
