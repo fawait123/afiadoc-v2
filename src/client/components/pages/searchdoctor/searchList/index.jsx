@@ -14,98 +14,127 @@ import {
   IMG_sp_05,
 } from "./img";
 import SimpleReactLightbox from "simple-react-lightbox";
-// import { SRLWrapper,useLightbox } from "simple-react-lightbox";
-// import img1 from "../../../../assets/images/feature-01.jpg";
-// import img2 from "../../../../assets/images/feature-02.jpg";
-// import img3 from "../../../../assets/images/feature-03.jpg";
-// import img4 from "../../../../assets/images/feature-04.jpg";
+import { IMAGEPATH } from "../../../../../config";
+import { FaUserDoctor } from "react-icons/fa6";
+
 import MyComponent from "./mycomponent";
 
-const SearchList = () => {
-  return (
+const SearchList = ({ dataDoctors = [] }) => {
+  return dataDoctors.length === 0 ? (
+    <div
+      style={{
+        width: "100%",
+        height: "500px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      <FaUserDoctor size={40} />
+      <h4 style={{ marginTop: 15 }}>Tidak Ditemukan Dokter</h4>
+    </div>
+  ) : (
     <div>
-      <div className="card">
-        <div className="card-body">
-          <div className="doctor-widget">
-            <div className="doc-info-left">
-              <div className="doctor-img">
-                <Link to="/patient/doctor-profile">
-                  <img src={IMG01} className="img-fluid" alt="User" />
-                </Link>
-              </div>
-              <div className="doc-info-cont">
-                <h4 className="doc-name">
-                  <Link to="/patient/doctor-profile">Dr. Ruby Perrin</Link>
-                </h4>
-                <p className="doc-speciality">
-                  MDS - Periodontology and Oral Implantology, BDS
-                </p>
-                <h5 className="doc-department">
-                  <img src={IMG_sp_02} className="img-fluid" alt="Speciality" />
-                  Dentist
-                </h5>
-                <div className="rating">
-                  <i className="fas fa-star filled"></i>
-                  <i className="fas fa-star filled"></i>
-                  <i className="fas fa-star filled"></i>
-                  <i className="fas fa-star filled"></i>
-                  <i className="fas fa-star"></i>
-                  <span className="d-inline-block average-rating ms-1">(17)</span>
-                </div>
-                <div className="clinic-details">
-                  <p className="doc-location">
-                    <i className="fas fa-map-marker-alt"></i> Newyork, USA
-                  </p>
-                  <div></div>
-                  <SimpleReactLightbox>
-                    <MyComponent />
-                  </SimpleReactLightbox>
-                </div>
-                <div className="clinic-services">
-                  <span>Dental Fillings</span>
-                  <span> Whitneing</span>
-                </div>
-              </div>
-            </div>
-            <div className="doc-info-right">
-              <div className="clini-infos">
-                <ul>
-                  <li>
-                    <i className="far fa-thumbs-up"></i> 98%
-                  </li>
-                  <li>
-                    <i className="far fa-comment"></i> 17 Feedback
-                  </li>
-                  <li>
-                    <i className="fas fa-map-marker-alt"></i> Florida, USA
-                  </li>
-                  <li>
-                    <i className="far fa-money-bill-alt"></i> $300 - $1000{" "}
-                    <OverlayTrigger
-                      overlay={
-                        <Tooltip id="tooltip-disabled">Lorem Ipsum</Tooltip>
-                      }
-                    >
-                      <span className="d-inline-block">
-                        <i className="fas fa-info-circle"></i>
+      {dataDoctors.map((doc, index) => {
+        return (
+          <div key={doc?.id} className="card">
+            <div className="card-body">
+              <div className="doctor-widget">
+                <div className="doc-info-left">
+                  <div className="doctor-img">
+                    <Link to="/patient/doctor-profile">
+                      <img
+                        src={IMAGEPATH + doc.photos}
+                        className="img-fluid"
+                        alt="User"
+                      />
+                    </Link>
+                  </div>
+                  <div className="doc-info-cont">
+                    <h4 className="doc-name">
+                      <Link to="/patient/doctor-profile">{doc?.name}</Link>
+                    </h4>
+                    <p className="doc-speciality">
+                      {/* MDS - Periodontology and Oral Implantology, BDS */}
+                      {doc?.user?.email}
+                    </p>
+                    <h5 className="doc-department">
+                      {/* <img
+                        src={IMG_sp_02}
+                        className="img-fluid"
+                        alt="Speciality"
+                      /> */}
+                      {doc?.specialist?.name}
+                    </h5>
+                    <div className="rating">
+                      <i className="fas fa-star filled"></i>
+                      <i className="fas fa-star filled"></i>
+                      <i className="fas fa-star filled"></i>
+                      <i className="fas fa-star filled"></i>
+                      <i className="fas fa-star"></i>
+                      <span className="d-inline-block average-rating ms-1">
+                        (17)
                       </span>
-                    </OverlayTrigger>
-                  </li>
-                </ul>
-              </div>
-              <div className="clinic-booking">
-                <Link to="/patient/doctor-profile" className="view-pro-btn">
-                  View Profile
-                </Link>
-                <Link to="/patient/booking1" className="apt-btn">
-                  Book Appointment
-                </Link>
+                    </div>
+                    <div className="clinic-details">
+                      <p className="doc-location">
+                        <i className="fas fa-map-marker-alt"></i>{" "}
+                        {doc?.placebirth}
+                      </p>
+                      <div></div>
+                      <SimpleReactLightbox>
+                        <MyComponent />
+                      </SimpleReactLightbox>
+                    </div>
+                    <div className="clinic-services">
+                      <span>Dental Fillings</span>
+                      <span> Whitneing</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="doc-info-right">
+                  <div className="clini-infos">
+                    <ul>
+                      <li>
+                        <i className="far fa-thumbs-up"></i> 98%
+                      </li>
+                      <li>
+                        <i className="far fa-comment"></i> 17 Feedback
+                      </li>
+                      <li>
+                        <i className="fas fa-map-marker-alt"></i> Florida, USA
+                      </li>
+                      <li>
+                        <i className="far fa-money-bill-alt"></i> $300 - $1000{" "}
+                        <OverlayTrigger
+                          overlay={
+                            <Tooltip id="tooltip-disabled">Lorem Ipsum</Tooltip>
+                          }
+                        >
+                          <span className="d-inline-block">
+                            <i className="fas fa-info-circle"></i>
+                          </span>
+                        </OverlayTrigger>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="clinic-booking">
+                    <Link to="/patient/doctor-profile" className="view-pro-btn">
+                      View Profile
+                    </Link>
+                    <Link to="/patient/booking1" className="apt-btn">
+                      Book Appointment
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="card">
+        );
+      })}
+
+      {/* <div className="card">
         <div className="card-body">
           <div className="doctor-widget">
             <div className="doc-info-left">
@@ -430,7 +459,7 @@ const SearchList = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

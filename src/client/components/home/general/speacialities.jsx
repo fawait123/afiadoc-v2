@@ -93,16 +93,21 @@ function Speacialities({ datas, loading }) {
               <OwlCarousel {...specialitysettings}>
                 {datas?.map((item) => {
                   return (
-                    <div className="item" key={item?.id}>
-                      <div className="specialities-item">
-                        <div className="specialities-img">
-                          <span>
-                            <img src={IMAGEPATH + item?.picture} alt="" />
-                          </span>
+                    <Link
+                      to={`/patient/search-doctor-specialist/${item.id}`}
+                      className="btn"
+                    >
+                      <div className="item" key={item?.id}>
+                        <div className="specialities-item">
+                          <div className="specialities-img">
+                            <span>
+                              <img src={IMAGEPATH + item?.picture} alt="" />
+                            </span>
+                          </div>
+                          <p>{item?.name}</p>
                         </div>
-                        <p>{item?.name}</p>
                       </div>
-                    </div>
+                    </Link>
                   );
                 })}
               </OwlCarousel>

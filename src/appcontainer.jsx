@@ -153,6 +153,7 @@ import Payment from "./client/components/home/payment.jsx";
 import Bookingsuccess from "./client/components/home/bookingsuccess.jsx";
 import Patientdetails from "./client/components/home/patientdetails.jsx";
 import Loginemail from "./client/components/home/loginemail.jsx";
+import SearchDoctorSpecialist from "./client/components/pages/searchdoctor/search-doctor-specialist.jsx";
 const AppContainer = function (props) {
   // const config = "/react/template/";
   if (props) {
@@ -329,6 +330,11 @@ const AppContainer = function (props) {
                 path="/patient/search-doctor1"
                 exact
                 component={SearchDoctor}
+              />
+              <Route
+                path="/patient/search-doctor-specialist/:specialistID"
+                exact
+                component={SearchDoctorSpecialist}
               />
               <Route
                 path="/patient/search-doctor2"
