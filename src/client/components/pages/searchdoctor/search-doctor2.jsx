@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../header";
-// import Searchfilter from "./searchFilter";
 import StickyBox from "react-sticky-box";
 import Doctors from "./doctors";
 import Footer from "../../footer";
 import { Link } from "react-router-dom";
-// import Slider from "react-slider";
+import httpRequest from "../../../../API/http";
 
 const SearchDoctor2 = (props) => {
-  // let pathname = props.location.pathname;
-
-  // if (props.location.pathname === "/patient/search-doctor2") {
-  //   require("../../../assets/css/feather.css");
-  // }
   const [minValue, setMinValue] = useState(10);
   const [maxValue, setMaxValue] = useState(5000);
+  const [doctors, setDoctors] = useState([]);
+
+  const getData = async () => {
+    httpRequest({
+      url: "public/doctor",
+      method: "get",
+      params: {
+        page: 1,
+        limit: 10,
+        isActive: 1,
+      },
+    }).then((response) => {
+      console.log(response, "res");
+      setDoctors(response?.data?.results?.data?.rows);
+    });
+  };
 
   useEffect(() => {
     if (document.getElementById("price-range")) {
@@ -28,6 +38,10 @@ const SearchDoctor2 = (props) => {
         slider.removeEventListener("input", handleSliderChange);
       };
     }
+  }, []);
+
+  useEffect(() => {
+    getData();
   }, []);
 
   const handleSliderChange = (event) => {
@@ -511,7 +525,7 @@ const SearchDoctor2 = (props) => {
                 </div>
 
                 <div className="col-lg-9">
-                  <Doctors />
+                  <Doctors datas={doctors} />
                 </div>
               </div>
             </div>
