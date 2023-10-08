@@ -2,17 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 // import Lightbox from 'react-image-lightbox';
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
-import {
-  IMG01,
-  IMG02,
-  IMG03,
-  IMG04,
-  IMG05,
-  IMG_sp_02,
-  IMG_sp_03,
-  IMG_sp_04,
-  IMG_sp_05,
-} from "./img";
 import SimpleReactLightbox from "simple-react-lightbox";
 import { IMAGEPATH } from "../../../../../config";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -43,7 +32,7 @@ const SearchList = ({ dataDoctors = [] }) => {
               <div className="doctor-widget">
                 <div className="doc-info-left">
                   <div className="doctor-img">
-                    <Link to="/patient/doctor-profile">
+                    <Link to={`/patient/doctor-profile?id=${doc?.id}`}>
                       <img
                         src={IMAGEPATH + doc.photos}
                         className="img-fluid"

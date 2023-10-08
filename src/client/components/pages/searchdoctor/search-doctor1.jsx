@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import Select from "react-select";
 // import SearchFilter from "./searchFilter";
 import SearchList from "./searchList";
@@ -8,6 +8,7 @@ import Footer from "../../footer";
 import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import httpRequest from "../../../../API/http";
 
 const SearchDoctor = (props) => {
   // let pathname = props.location.pathname;
@@ -23,6 +24,25 @@ const SearchDoctor = (props) => {
   //   { value: "Free", label: "Free" },
   // ];
   const [selectedDate, setSelectedDate] = useState(null);
+  const [doctors, setDoctors] = useState([]);
+
+  const getData = async () => {
+    await httpRequest({
+      url: "public/doctor",
+      method: "get",
+      params: {
+        page: 1,
+        limit: 10,
+        isActive: 1,
+      },
+    }).then((response) => {
+      setDoctors(response?.data?.results?.data?.rows);
+    });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -155,7 +175,7 @@ const SearchDoctor = (props) => {
             </div>
 
             <div className="col-md-12 col-lg-8 col-xl-9">
-              <SearchList />
+              <SearchList dataDoctors={doctors} />
               <div className="load-more text-center">
                 <Link to="#" className="btn btn-primary btn-sm">
                   Load More

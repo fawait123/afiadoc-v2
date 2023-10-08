@@ -4,8 +4,9 @@
 /* global google */
 import React, { useState } from "react";
 import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
-// import InfoWindowEx from "./InfoWindowEx";
 import Iconmap from "../../../assets/images/marker.png";
+import { IMAGEPATH } from "../../../../config";
+import Utils from "../../../../helpers/utils";
 
 export const MapContainer = (props) => {
   const [state, setState] = useState({
@@ -39,7 +40,7 @@ export const MapContainer = (props) => {
               onClick={onMarkerClick}
               key={place.id}
               place_={place}
-              position={{ lat: place.lat, lng: place.lng }}
+              position={{ lat: place.latitude, lng: place.longitude }}
             />
           );
         })}
@@ -52,31 +53,30 @@ export const MapContainer = (props) => {
             style={{ width: "100%", display: "inline-block" }}
           >
             <div className="doc-img">
-              <a
-                href={state.selectedPlace.profile_link}
-                tabIndex={0}
-                target="_blank"
-              >
+              <a href={"/patient/doctor-profile"} tabIndex={0} target="_blank">
                 <img
                   style={{ height: "auto", width: "200px" }}
-                  alt={state.selectedPlace.doc_name}
-                  src={state.selectedPlace.image}
+                  alt={state.selectedPlace?.name}
+                  src={IMAGEPATH + state.selectedPlace?.photos}
                 />
               </a>
             </div>
             <div className="pro-content">
               <h3 className="title">
                 <a
-                  href={state.selectedPlace.profile_link}
+                  href={"/patient/doctor-profile"}
                   tabIndex={0}
                   target="_blank"
                 >
                   {" "}
-                  {state.selectedPlace.doc_name}{" "}
+                  {state.selectedPlace?.name}{" "}
                 </a>
                 <i className="fas fa-check-circle verified" />
               </h3>
-              <p className="speciality"> {state.selectedPlace.speciality} </p>
+              <p className="speciality">
+                {" "}
+                {state.selectedPlace?.specialist?.name}{" "}
+              </p>
               <div className="rating">
                 <i className="fas fa-star filled" />
                 <i className="fas fa-star filled" />
@@ -84,21 +84,23 @@ export const MapContainer = (props) => {
                 <i className="fas fa-star filled" />
                 <i className="fas fa-star" />
                 <span className="d-inline-block average-rating ms-1">
-                  ( {state.selectedPlace.total_review} )
+                  ( {100} )
                 </span>
               </div>
               <ul className="available-info">
                 <li>
                   <i className="fas fa-map-marker-alt" />
-                  {state.selectedPlace.address}
+                  {Utils.formatAddress(state.selectedPlace?.addresses)}
                 </li>
                 <li>
-                  <i className="far fa-clock" />{" "}
-                  {state.selectedPlace.next_available}{" "}
+                  <i className="far fa-clock" /> {"Available on Fri, 22 Mar"}
                 </li>
                 <li>
                   <i className="far fa-money-bill-alt" />{" "}
-                  {state.selectedPlace.amount}{" "}
+                  {"RP " +
+                    Utils.doctorPrice(
+                      state.selectedPlace?.prices
+                    )?.toLocaleString("id", "ID")}
                 </li>
               </ul>
             </div>
