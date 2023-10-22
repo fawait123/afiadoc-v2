@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Image, Table } from "antd";
+import { Table } from "antd";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import { itemRender, onShowSizeChange } from "../paginationfunction";
 import SidebarNav from "../sidebar";
 import { Link } from "react-router-dom";
 import httpRequest from "../../../API/http";
-import moment from "moment";
 import useGlobalStore from "../../../STORE/GlobalStore";
 import { IMAGEPATH } from "../../../config";
 import { Modal } from "react-bootstrap";
-import Utils from "../../../helpers/utils";
-import { FaEye, FaPencil, FaTrash } from "react-icons/fa6";
+import { FaPencil, FaTrash } from "react-icons/fa6";
 
-const Doctors = () => {
+const Specialist = () => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
@@ -21,161 +19,15 @@ const Doctors = () => {
   const [rows, setRows] = useState([]);
   const { loadingTable, setLoadingTable } = useGlobalStore((state) => state);
   const [detail, setDetail] = useState({});
-  const [showDetail, setShowDetail] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const columns = [
     {
-      title: "NIK",
+      title: "Nama Spesialis",
       render: (record) => (
         <>
-          <span>{record?.NIK}</span>
-        </>
-      ),
-      sorter: (a, b) => a.length - b.length,
-    },
-    {
-      title: "STR",
-      render: (record) => (
-        <>
-          <span>{record?.STR}</span>
-        </>
-      ),
-      sorter: (a, b) => a.length - b.length,
-    },
-    {
-      title: "Nama Dokter",
-      dataIndex: "name",
-      render: (text, record) => (
-        <>
-          <Link className="avatar mx-2" to={`/admin/profile?id=${record?.id}`}>
-            <img className="rounded-circle" src={IMAGEPATH + record?.photos} />
-          </Link>
-          <Link to={`/admin/profile?id=${record?.id}`}>{text}</Link>
-        </>
-      ),
-      sorter: (a, b) => a.length - b.length,
-    },
-    {
-      title: "Jenis Kelamin",
-      render: (record) => (
-        <>
-          <span>{record?.gender == "L" ? "Laki Laki" : "Perempuan"}</span>
-        </>
-      ),
-      sorter: (a, b) => a.length - b.length,
-    },
-    {
-      title: "Tanggal Lahir",
-      sorter: (a, b) => a.length - b.length,
-      render: (record) => {
-        return (
-          <>
-            <span>{`${record?.placebirth}, ${record?.birthdate}`}</span>
-          </>
-        );
-      },
-    },
-    {
-      title: "Spesialis",
-      sorter: (a, b) => a.length - b.length,
-      render: (record) => {
-        return (
-          <>
-            <span>{record?.specialist?.name}</span>
-          </>
-        );
-      },
-    },
-    {
-      title: "Email",
-      render: (record) => (
-        <>
-          <span>{record?.email}</span>
-        </>
-      ),
-      sorter: (a, b) => a.length - b.length,
-    },
-    {
-      title: "No. Handphone",
-      render: (record) => (
-        <>
-          <span>{record?.phone}</span>
-        </>
-      ),
-      sorter: (a, b) => a.length - b.length,
-    },
-    {
-      title: "Tanggal Daftar",
-      render: (record) => (
-        <>
-          <span className="user-name">
-            {moment(record.createdAt).format("DD MM YYYY")}
-          </span>
-          <br />
-          <span>{moment(record.createdAt).format("hh:mm:ss")}</span>
-        </>
-      ),
-      sorter: (a, b) => a.length - b.length,
-    },
-    {
-      title: "Pendidikan",
-      render: (record) => (
-        <>
-          {record?.academics?.map((item, index) => (
-            <span
-              key={index}
-              className="badge bg-primary text-white"
-            >{`${item?.name} ${item?.year_entry}-${item?.year_out}`}</span>
-          ))}
-        </>
-      ),
-      sorter: (a, b) => a.length - b.length,
-    },
-    {
-      title: "Alamat",
-      render: (record) => (
-        <>
-          <span>{Utils.formatAddress(record?.addresses)}</span>
-        </>
-      ),
-      sorter: (a, b) => a.length - b.length,
-    },
-    {
-      title: "Status Akun",
-      render: (text, record) => {
-        return (
-          <div className="status-toggle">
-            <input
-              id={`rating${record?.id}`}
-              className="check"
-              type="checkbox"
-              checked={record?.user?.is_active}
-            />
-            <label
-              htmlFor={`rating${record?.id}`}
-              className="checktoggle checkbox-bg"
-            >
-              checkbox
-            </label>
-          </div>
-        );
-      },
-      sorter: (a, b) => a.length - b.length,
-    },
-    {
-      title: "Dokumen",
-      render: (record) => (
-        <>
-          <button
-            className="btn btn-primary btn-sm"
-            onClick={() => {
-              setDetail(record);
-              setShowDetail(true);
-            }}
-          >
-            <FaEye />
-          </button>
+          <img className="rounded-circle" src={IMAGEPATH + record?.picture} />
+          <strong>{record?.name}</strong>
         </>
       ),
       sorter: (a, b) => a.length - b.length,
@@ -225,7 +77,7 @@ const Doctors = () => {
   ) => {
     setLoadingTable(true);
     await httpRequest({
-      url: "/admin/doctor",
+      url: "/admin/specialist",
       method: "get",
       params: {
         page: dataPage ? dataPage : page,
@@ -259,12 +111,14 @@ const Doctors = () => {
           <div className="page-header">
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title">List Data Dokter</h3>
+                <h3 className="page-title">List Data Spesialis</h3>
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
                     <Link to="/admin">Dashboard</Link>
                   </li>
-                  <li className="breadcrumb-item active">List Data Dokter</li>
+                  <li className="breadcrumb-item active">
+                    List Data Spesialis
+                  </li>
                 </ul>
               </div>
             </div>
@@ -283,7 +137,7 @@ const Doctors = () => {
                           className="btn btn-primary btn-sm"
                           tabIndex={0}
                         >
-                          Tambah Dokter
+                          Tambah Spesialis
                         </a>
                       </div>
                     </div>
@@ -292,7 +146,7 @@ const Doctors = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder="Cari data dokter"
+                          placeholder="Cari data spesialis..."
                           onChange={(e) => {
                             getData(1, 10, e.target.value);
                           }}
@@ -381,36 +235,6 @@ const Doctors = () => {
         </Modal.Footer>
       </Modal>
 
-      {/* modal detail */}
-      <Modal
-        show={showDetail}
-        onHide={() => {
-          setDetail({});
-          setShowDetail(false);
-        }}
-        className="modal"
-        style={{ marginTop: "80px" }}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>
-            <h5 className="modal-title">Detail Dokumen {detail?.name}</h5>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="row">
-            <div className="col-md-4">
-              <Image src={detail?.photo} alt="Foto Profil" />
-            </div>
-            <div className="col-md-4">
-              <Image src={detail?.practice} alt="Foto Praktik" />
-            </div>
-            <div className="col-md-4">
-              <Image src={detail?.ktp} alt="Foto KTP" />
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
-
       {/* modal confirm */}
       <Modal
         show={showConfirm}
@@ -446,4 +270,4 @@ const Doctors = () => {
   );
 };
 
-export default Doctors;
+export default Specialist;

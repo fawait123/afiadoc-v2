@@ -1,21 +1,131 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardSidebar from "../dashboard/sidebar/sidebar.jsx";
 import { Link } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import StickyBox from "react-sticky-box";
-import son from "../../../assets/images/son.jpg";
-import mother from "../../../assets/images/mother.jpg";
-import father from "../../../assets/images/father.jpg";
-import daughter from "../../../assets/images/daughter.jpg";
 import Footer from "../../footer";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Header from "../../header.jsx";
+import httpRequest from "../../../../API/http.js";
+import { Form, Image, Row, Table } from "antd";
+import { FaPencil, FaTrash } from "react-icons/fa6";
+import { InputCustom } from "../../../../componentcustom/inputCustom.js";
+
+const columns = [
+  {
+    title: <strong>NIK</strong>,
+    dataIndex: "NIK",
+    key: "NIK",
+    render: (text) => <span>{text}</span>,
+  },
+  {
+    title: <strong>Nama</strong>,
+    dataIndex: "name",
+    key: "name",
+    render: (text, record) => {
+      return (
+        <Row justify={"start"} align={"middle"}>
+          <Image
+            width={80}
+            height={80}
+            style={{ objectFit: "contain", borderRadius: 50 }}
+            src={record?.photo}
+          />
+          <span>{text}</span>
+        </Row>
+      );
+    },
+  },
+  {
+    title: <strong>Tanggal Lahir</strong>,
+    dataIndex: "birthdate",
+    key: "birthdate",
+    render: (text, record) => <span>{`${record?.placebirth}, ${text}`}</span>,
+  },
+  {
+    title: <strong>Jenis Kelamin</strong>,
+    dataIndex: "gender",
+    key: "gender",
+    render: (text) => <span>{text == "L" ? "Laki Laki" : "Perempuan"}</span>,
+  },
+  {
+    title: <strong>Agama</strong>,
+    dataIndex: "religion",
+    key: "religion",
+    render: (text) => <span>{text}</span>,
+  },
+  {
+    title: <strong>Email</strong>,
+    dataIndex: "email",
+    key: "email",
+    render: (text) => <span>{text}</span>,
+  },
+  {
+    title: <strong>No. Handphone</strong>,
+    dataIndex: "phone",
+    key: "phone",
+    render: (text) => <span>{text}</span>,
+  },
+  {
+    title: <strong>Golongan Darah</strong>,
+    dataIndex: "blood",
+    key: "blood",
+    render: (text) => <span>{text}</span>,
+  },
+  {
+    title: <strong>Berat Badan</strong>,
+    dataIndex: "weight",
+    key: "weight",
+    render: (text) => <span>{text}</span>,
+  },
+  {
+    title: <strong>Tinggi Badan</strong>,
+    dataIndex: "height",
+    key: "height",
+    render: (text) => <span>{text}</span>,
+  },
+  {
+    title: <strong>Aksi</strong>,
+    key: "action",
+    render: (_, record) => {
+      return (
+        <>
+          <FaPencil className="text-primary" style={{ cursor: "pointer" }} />{" "}
+          &nbsp;&nbsp;&nbsp;
+          <FaTrash className="text-danger" style={{ cursor: "pointer" }} />
+        </>
+      );
+    },
+  },
+];
 
 const Dependent = (props) => {
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [rows, setRows] = useState([]);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [count, setCount] = useState(0);
+
+  const getData = () => {
+    httpRequest({
+      url: "/admin/patient",
+      method: "get",
+      params: {
+        page,
+        limit,
+      },
+    }).then((response) => {
+      const result = response?.data?.results?.data?.rows;
+      setRows(result);
+    });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   const handleChange = (date) => {
     setDate(date);
   };
@@ -28,13 +138,13 @@ const Dependent = (props) => {
           <div className="row align-items-center inner-banner">
             <div className="col-md-12 col-12 text-center">
               <nav aria-label="breadcrumb" className="page-breadcrumb">
-                <h2 className="breadcrumb-title">Dependent</h2>
+                <h2 className="breadcrumb-title">Data Pasien</h2>
                 <ol className="breadcrumb">
                   <li className="breadcrumb-item">
                     <Link to="/home">Home</Link>
                   </li>
                   <li className="breadcrumb-item active" aria-current="page">
-                    Dependent
+                    Data Pasien
                   </li>
                 </ol>
               </nav>
@@ -55,7 +165,7 @@ const Dependent = (props) => {
                 <div className="card-header">
                   <div className="row">
                     <div className="col-sm-6">
-                      <h3 className="card-title">Dependent</h3>
+                      <h3 className="card-title">Data Pasien</h3>
                     </div>
                     <div className="col-sm-6">
                       <div className="text-end">
@@ -65,7 +175,7 @@ const Dependent = (props) => {
                           className="btn btn-primary btn-sm"
                           tabIndex={0}
                         >
-                          Add Dependent
+                          Tambah Pasien
                         </a>
                       </div>
                     </div>
@@ -75,174 +185,12 @@ const Dependent = (props) => {
                   {/* Dependent Tab */}
                   <div className="card card-table mb-0">
                     <div className="card-body">
-                      <div className="table-responsive">
-                        <table className="table table-hover table-center mb-0">
-                          <thead>
-                            <tr>
-                              <th>Dependent</th>
-                              <th>Relationship</th>
-                              <th>gender</th>
-                              <th>Number</th>
-                              <th>Blood Group</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>
-                                <h2 className="table-avatar">
-                                  <span className="avatar avatar-sm me-2">
-                                    <img
-                                      className="avatar-img rounded-circle"
-                                      src={son}
-                                      alt="User Image"
-                                    />
-                                  </span>
-                                  Christopher
-                                </h2>
-                              </td>
-                              <td>Son</td>
-                              <td>Male</td>
-                              <td>303-297-6170</td>
-                              <td>AB+</td>
-                              <td>
-                                <div className="table-action">
-                                  <a
-                                    href="#edit_form"
-                                    className="btn btn-sm bg-info-light"
-                                    data-bs-toggle="modal"
-                                    onClick={() => setEdit(true)}
-                                  >
-                                    {" "}
-                                    <i className="fas fa-edit" /> Edit
-                                  </a>
-                                  &nbsp;
-                                  <a
-                                    href="#"
-                                    className="btn btn-sm bg-danger-light"
-                                  >
-                                    <i className="fas fa-times" /> Deactive
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <h2 className="table-avatar">
-                                  <span className="avatar avatar-sm me-2">
-                                    <img
-                                      className="avatar-img rounded-circle"
-                                      src={daughter}
-                                      alt="User Image"
-                                    />
-                                  </span>
-                                  Tressie
-                                </h2>
-                              </td>
-                              <td>Daughter</td>
-                              <td>Female</td>
-                              <td>360-822-9097</td>
-                              <td>B+</td>
-                              <td>
-                                <div className="table-action">
-                                  <a
-                                    href="#edit_form"
-                                    className="btn btn-sm bg-info-light"
-                                    data-bs-toggle="modal"
-                                    onClick={() => setEdit(true)}
-                                  >
-                                    {" "}
-                                    <i className="fas fa-edit" /> Edit
-                                  </a>
-                                  &nbsp;
-                                  <a
-                                    href="#"
-                                    className="btn btn-sm bg-danger-light"
-                                  >
-                                    <i className="fas fa-times" /> Deactive
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <h2 className="table-avatar">
-                                  <span className="avatar avatar-sm me-2">
-                                    <img
-                                      className="avatar-img rounded-circle"
-                                      src={father}
-                                      alt="User Image"
-                                    />
-                                  </span>
-                                  Champagne
-                                </h2>
-                              </td>
-                              <td>Father</td>
-                              <td>Male</td>
-                              <td>720-841-8299</td>
-                              <td>B+</td>
-                              <td>
-                                <div className="table-action">
-                                  <a
-                                    href="#edit_form"
-                                    className="btn btn-sm bg-info-light"
-                                    data-bs-toggle="modal"
-                                    onClick={() => setEdit(true)}
-                                  >
-                                    {" "}
-                                    <i className="fas fa-edit" /> Edit
-                                  </a>
-                                  &nbsp;
-                                  <a
-                                    href="#"
-                                    className="btn btn-sm bg-danger-light"
-                                  >
-                                    <i className="fas fa-times" /> Deactive
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <h2 className="table-avatar">
-                                  <span className="avatar avatar-sm me-2">
-                                    <img
-                                      className="avatar-img rounded-circle"
-                                      src={mother}
-                                      alt="User Image"
-                                    />
-                                  </span>
-                                  Vena
-                                </h2>
-                              </td>
-                              <td>Mother</td>
-                              <td>Male</td>
-                              <td>949-583-4370</td>
-                              <td>A+</td>
-                              <td>
-                                <div className="table-action">
-                                  <a
-                                    href="#edit_form"
-                                    className="btn btn-sm bg-info-light"
-                                    data-bs-toggle="modal"
-                                    onClick={() => setEdit(true)}
-                                  >
-                                    {" "}
-                                    <i className="fas fa-edit" /> Edit
-                                  </a>
-                                  &nbsp;
-                                  <a
-                                    href="#"
-                                    className="btn btn-sm bg-danger-light"
-                                  >
-                                    <i className="fas fa-times" /> Deactive
-                                  </a>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+                      <Table
+                        columns={columns}
+                        dataSource={rows}
+                        style={{ overflow: "scroll" }}
+                      />
+                      ;
                     </div>
                   </div>
                   {/* /Dependent Tab */}
@@ -265,61 +213,20 @@ const Dependent = (props) => {
         </Modal.Header>
         <Modal.Body>
           <div className="modal-body">
-            <form
-              action="#"
-              encType="multipart/form-data"
-              autoComplete="off"
-              method="post"
-            >
-              <div className="modal-body">
-                <div className="form-group">
-                  <label className="control-label mb-10">
-                    {" "}
-                    Name <span className="text-danger">*</span>
-                  </label>
-                  <input type="text" name="name" className="form-control" />
-                </div>
-                <div className="form-group">
-                  <label className="control-label mb-10">Relationship </label>
-                  <input
-                    type="text"
-                    name="relationship"
-                    className="form-control"
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="control-label mb-10">Gender </label>
-                  <select className="form-control" name="gender">
-                    <option value>Select</option>
-                    <option defaultValue="Male">Male</option>
-                    <option defaultValue="Female">Female</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label className="control-label mb-10">DOB </label>
-                  <DatePicker
-                    name="dob"
-                    id="dob"
-                    selected={date}
-                    onChange={handleChange}
-                    className="form-control date-icon"
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="control-label mb-10">Photo </label>
-                  <input
-                    type="file"
-                    name="profile_image"
-                    className="form-control"
-                  />
-                </div>
-              </div>
-              <div className="modal-footer text-center">
-                <button type="submit" className="btn btn-primary submit-btn">
-                  Save Changes
-                </button>
-              </div>
-            </form>
+            <div className="modal-body">
+              <Form layout="vertical">
+                <InputCustom
+                  label={"Name"}
+                  name={"name"}
+                  rules={[{ required: true }]}
+                />
+              </Form>
+            </div>
+            <div className="modal-footer text-center">
+              <button type="submit" className="btn btn-primary submit-btn">
+                Save Changes
+              </button>
+            </div>
           </div>
         </Modal.Body>
       </Modal>

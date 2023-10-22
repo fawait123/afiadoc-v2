@@ -32,15 +32,6 @@ import useGLobalStore from "../../../../STORE/GlobalStore/index.js";
 const Dashboard = (props) => {
   const [count, setCount] = useState(1, 2, 3, 4);
   const user = useGLobalStore((state) => state);
-  console.log(user);
-
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     key: 1,
-  //   };
-  //   this.handleSelect = this.handleSelect.bind(this);
-  // }
 
   return (
     <>

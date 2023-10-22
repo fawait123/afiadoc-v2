@@ -144,6 +144,11 @@ import SearchDoctorSpecialist from "./../client/components/pages/searchdoctor/se
 
 const templateRoute = [
   {
+    path: "/patient/dependent",
+    component: PatientDependent,
+  },
+  // template
+  {
     path: "/patient/doctor-grid",
     component: DoctorGrid,
   },
@@ -602,10 +607,6 @@ const templateRoute = [
   {
     path: "/patient/dashboard",
     component: Dashboard,
-  },
-  {
-    path: "/patient/dependent",
-    component: PatientDependent,
   },
   {
     path: "/patient/accounts",

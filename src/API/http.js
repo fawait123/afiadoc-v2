@@ -1,6 +1,7 @@
 import axios from "axios";
 import { notification } from "antd";
 import Cookie from "js-cookie";
+import { BASE_URL } from "../config";
 
 const handleNotification = (type, title, text) => {
   notification.config({
@@ -13,7 +14,7 @@ const handleNotification = (type, title, text) => {
 };
 
 const httpRequest = axios.create({
-  baseURL: "https://api.afiadoc.com",
+  baseURL: BASE_URL,
   withCredentials: false,
 });
 
@@ -27,7 +28,7 @@ httpRequest.interceptors.request.use(
 );
 
 httpRequest.interceptors.request.use((config) => {
-  config.headers["Authorization"] = "Bearer " + Cookie.get("token");
+  config.headers["Authorization"] = "Bearer " + localStorage.getItem("token");
   return config;
 });
 

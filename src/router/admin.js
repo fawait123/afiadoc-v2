@@ -2,7 +2,6 @@ import Dashboard from "./../admin/components/dashboard";
 import Appointments from "./../admin/components/appointments";
 import Specialities from "./../admin/components/specialities";
 import Doctors from "./../admin/components/doctors";
-import Patients from "./../admin/components/patients";
 import Reviews from "./../admin/components/reviews";
 import Transaction from "./../admin/components/transaction";
 import Settings from "./../admin/components/settings";
@@ -37,8 +36,35 @@ import ProductCategories from "./../admin/components/productlist/ProductCategori
 import InvoiceReportList from "./../admin/components/Reports/InvoiceReport/InvoiceReportList";
 import Role from "./../admin/components/role";
 import User from "./../admin/components/user";
+import Specialist from "../admin/components/specialist";
+import Patient from "../admin/components/patient";
 
 const adminRoute = [
+  {
+    path: "/admin",
+    component: Dashboard,
+  },
+  {
+    path: "/admin/doctor-list",
+    component: Doctors,
+  },
+  {
+    path: "/admin/specialist-list",
+    component: Specialist,
+  },
+  {
+    path: "/admin/patient-list",
+    component: Patient,
+  },
+  {
+    path: "/admin/role",
+    component: Role,
+  },
+  {
+    path: "/admin/user",
+    component: User,
+  },
+  // template
   {
     path: "/admin/login",
     component: Login,
@@ -56,32 +82,12 @@ const adminRoute = [
     component: Lockscreen,
   },
   {
-    path: "/admin",
-    component: Dashboard,
-  },
-  {
     path: "/admin/appointment-list",
     component: Appointments,
   },
   {
     path: "/admin/specialities",
     component: Specialities,
-  },
-  {
-    path: "/admin/doctor-list",
-    component: Doctors,
-  },
-  {
-    path: "/admin/patient-list",
-    component: Patients,
-  },
-  {
-    path: "/admin/role",
-    component: Role,
-  },
-  {
-    path: "/admin/user",
-    component: User,
   },
   {
     path: "/admin/reviews",
