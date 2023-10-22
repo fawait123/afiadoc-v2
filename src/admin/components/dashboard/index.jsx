@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SidebarNav from "../sidebar";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
@@ -7,8 +7,23 @@ import PatientsListDesboard from "./PatientsList";
 import AppointmentList from "./AppointmentList";
 import LineChart from "./LineChart";
 import StatusCharts from "./StatusCharts";
+import httpRequest from "../../../API/http";
 
 const Dashboard = () => {
+  const [card, setCard] = useState({});
+  const getData = () => {
+    httpRequest({
+      url: "/admin/dashboard",
+      method: "get",
+    }).then((response) => {
+      const result = response?.data?.results?.data?.admin;
+      setCard(result);
+    });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <>
       <div className="main-wrapper">
@@ -35,7 +50,7 @@ const Dashboard = () => {
                         <i className="fe fe-users" />
                       </span>
                       <div className="dash-count">
-                        <h3>168</h3>
+                        <h3>{card?.doctor?.count}</h3>
                       </div>
                     </div>
                     <div className="dash-widget-info">
@@ -43,6 +58,12 @@ const Dashboard = () => {
                       <div className="progress progress-sm">
                         <div className="progress-bar bg-primary w-50" />
                       </div>
+                      <span
+                        className="text-secondary mt-3"
+                        style={{ fontSize: 11 }}
+                      >
+                        {card?.doctor?.latestUpdate}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -56,7 +77,7 @@ const Dashboard = () => {
                           <i className="fe fe-credit-card" />
                         </span>
                         <div className="dash-count">
-                          <h3>487</h3>
+                          <h3>{card?.patient?.count}</h3>
                         </div>
                       </div>
                       <div className="dash-widget-info">
@@ -65,6 +86,12 @@ const Dashboard = () => {
                           <div className="progress-bar bg-success w-50" />
                         </div>
                       </div>
+                      <span
+                        className="text-secondary mt-3"
+                        style={{ fontSize: 11 }}
+                      >
+                        {card?.patient?.latestUpdate}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -76,7 +103,7 @@ const Dashboard = () => {
                           <i className="fe fe-money" />
                         </span>
                         <div className="dash-count">
-                          <h3>485</h3>
+                          <h3>{card?.appointment?.count}</h3>
                         </div>
                       </div>
                       <div className="dash-widget-info">
@@ -85,6 +112,12 @@ const Dashboard = () => {
                           <div className="progress-bar bg-danger w-50" />
                         </div>
                       </div>
+                      <span
+                        className="text-secondary mt-3"
+                        style={{ fontSize: 11 }}
+                      >
+                        {card?.appointment?.latestUpdate}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -93,18 +126,24 @@ const Dashboard = () => {
                     <div className="card-body">
                       <div className="dash-widget-header">
                         <span className="dash-widget-icon text-warning border-warning">
-                          <i className="fe fe-folder" />
+                          <i className="fe fe-user" />
                         </span>
                         <div className="dash-count">
-                          <h3>$62523</h3>
+                          <h3>{card?.user?.count}</h3>
                         </div>
                       </div>
                       <div className="dash-widget-info">
-                        <h6 className="text-muted">Revenue</h6>
+                        <h6 className="text-muted">User</h6>
                         <div className="progress progress-sm">
                           <div className="progress-bar bg-warning w-50" />
                         </div>
                       </div>
+                      <span
+                        className="text-secondary mt-3"
+                        style={{ fontSize: 11 }}
+                      >
+                        {card?.user?.latestUpdate}
+                      </span>
                     </div>
                   </div>
                 </div>

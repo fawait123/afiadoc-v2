@@ -108,6 +108,7 @@ const SidebarNav = () => {
                     <i className="fa fa-blind"></i> <span>Pasien</span>
                   </Link>
                 </li>
+
                 <li className="submenu">
                   <Link
                     to="#"
@@ -146,6 +147,18 @@ const SidebarNav = () => {
                     ""
                   )}
                 </li>
+                <li className="menu-title">
+                  <span>Appointment</span>
+                </li>
+                <li
+                  className={pathname?.includes("appointment") ? "active" : ""}
+                >
+                  <Link to="/admin/appointment">
+                    <i className="fa fa-calendar-check-o"></i>{" "}
+                    <span>Booking</span>
+                  </Link>
+                </li>
+
                 {/* <li
                   className={
                     pathname?.includes("/admin/appointment-list")
