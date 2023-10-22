@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import Select from "react-select";
-// import SearchFilter from "./searchFilter";
 import SearchList from "./searchList";
 import StickyBox from "react-sticky-box";
 import Header from "../../header";
@@ -11,18 +9,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import httpRequest from "../../../../API/http";
 
 const SearchDoctor = (props) => {
-  // let pathname = props.location.pathname;
-
-  // if (props.location.pathname === "/patient/search-doctor1") {
-  //   require("../../../assets/css/feather.css");
-  // }
-  // const options = [
-  //   { value: "Select", label: "Select" },
-  //   { value: "Rating", label: "Rating" },
-  //   { value: "Popular", label: "Popular" },
-  //   { value: "Lastest", label: "Lastest" },
-  //   { value: "Free", label: "Free" },
-  // ];
   const [selectedDate, setSelectedDate] = useState(null);
   const [doctors, setDoctors] = useState([]);
 

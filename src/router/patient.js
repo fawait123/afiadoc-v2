@@ -43,6 +43,11 @@ import Booking2 from "./../client/components/patients/booking/booking2.jsx";
 
 const patientRoute = [
   {
+    path: "/patient/dashboard",
+    component: Dashboard,
+  },
+  // template
+  {
     path: "/patient/doctor-grid",
     component: DoctorGrid,
   },
@@ -141,10 +146,6 @@ const patientRoute = [
   {
     path: "/patient/booking-success",
     component: BookingSuccess,
-  },
-  {
-    path: "/patient/dashboard",
-    component: Dashboard,
   },
   {
     path: "/patient/favourites",

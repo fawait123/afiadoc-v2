@@ -84,10 +84,20 @@ const SidebarNav = () => {
                   </Link>
                 </li>
                 <li
+                  className={
+                    pathname?.includes("specialist-list") ? "active" : ""
+                  }
+                >
+                  <Link to="/admin/specialist-list">
+                    <i className="fa fa-deaf"></i>
+                    <span>Spesialis</span>
+                  </Link>
+                </li>
+                <li
                   className={pathname?.includes("doctor-list") ? "active" : ""}
                 >
                   <Link to="/admin/doctor-list">
-                    <i className="fe fe-user-plus"></i>
+                    <i className="fa fa-user-md"></i>
                     <span>Dokter</span>
                   </Link>
                 </li>
@@ -95,7 +105,7 @@ const SidebarNav = () => {
                   className={pathname?.includes("patient-list") ? "active" : ""}
                 >
                   <Link to="/admin/patient-list">
-                    <i className="fe fe-user"></i> <span>Pasien</span>
+                    <i className="fa fa-blind"></i> <span>Pasien</span>
                   </Link>
                 </li>
                 <li className="submenu">

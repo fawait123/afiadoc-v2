@@ -1,7 +1,9 @@
 import { create } from "zustand";
 const useGlobalStore = create((set) => ({
   photo: localStorage.getItem("photo"),
-  user: localStorage.getItem("user"),
+  user: localStorage.getItem("user")
+    ? JSON.parse(atob(localStorage.getItem("user")))
+    : null,
   token: localStorage.getItem("token"),
   loadingBtn: false,
   loadingTable: false,

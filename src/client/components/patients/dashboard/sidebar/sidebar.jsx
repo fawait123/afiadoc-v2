@@ -11,14 +11,12 @@ export const DashboardSidebar = () => {
   const [address, setAddress] = useState("");
   const inputfile = useRef(null);
   const [dataUser, setDataUser] = useState(null);
-  // const [photo, setPhoto] = useState("");
   const [editPhoto, setEditPhoto] = useState("");
   const { photo, user, setPhoto } = useGlobalStore((state) => state);
 
   useEffect(() => {
     getCurrentLocation();
     getUser();
-    // setPhoto(localStorage.getItem("photo"));
   }, []);
 
   const getCurrentLocation = () => {
