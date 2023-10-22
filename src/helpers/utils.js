@@ -15,6 +15,13 @@ class Utils {
     // Use get method to retrieve queryParam
     return new URLSearchParams(useLocation().search).get(key);
   }
+
+  static logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("photo");
+    window.location.href = "/login";
+  }
 }
 
 export default Utils;

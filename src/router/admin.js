@@ -38,6 +38,7 @@ import Role from "./../admin/components/role";
 import User from "./../admin/components/user";
 import Specialist from "../admin/components/specialist";
 import Patient from "../admin/components/patient";
+import Appoinment from "../admin/components/appointment";
 
 const adminRoute = [
   {
@@ -63,6 +64,10 @@ const adminRoute = [
   {
     path: "/admin/user",
     component: User,
+  },
+  {
+    path: "/admin/appointment",
+    component: Appoinment,
   },
   // template
   {

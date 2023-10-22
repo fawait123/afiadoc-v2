@@ -13,6 +13,7 @@ import {
   afia_logo,
 } from "../imagepath";
 import useGlobalStore from "../../../STORE/GlobalStore";
+import Utils from "../../../helpers/utils";
 
 const Header = (props) => {
   const { user, photo } = useGlobalStore((state) => state);
@@ -264,9 +265,15 @@ const Header = (props) => {
               <Link className="dropdown-item" to="/admin/settings">
                 Settings
               </Link>
-              <Link className="dropdown-item" to="/admin/login">
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={() => {
+                  Utils.logout();
+                }}
+              >
                 Logout
-              </Link>
+              </a>
             </div>
           </li>
           {/* /User Menu */}
