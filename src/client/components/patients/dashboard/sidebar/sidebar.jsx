@@ -5,6 +5,7 @@ import moment from "moment";
 import { toBase64 } from "../../../../../globalfunction";
 import { FiEdit } from "react-icons/fi";
 import useGlobalStore from "../../../../../STORE/GlobalStore";
+import Utils from "../../../../../helpers/utils";
 
 export const DashboardSidebar = () => {
   const pathname = window.location.pathname;
@@ -133,19 +134,26 @@ export const DashboardSidebar = () => {
                 <span>Dashboard</span>
               </Link>
             </li>
-            <li className={pathname.includes("/favourites") ? "active" : ""}>
-              <Link to="/patient/favourites">
-                <i className="fas fa-bookmark"></i>
-                <span>Favourites</span>
-              </Link>
-            </li>
             <li className={pathname.includes("/dependent") ? "active" : ""}>
               <Link to="/patient/dependent">
                 <i className="fas fa-users"></i>
                 <span>Pasien</span>
               </Link>
             </li>
-            <li className={pathname.includes("/chat-doctor") ? "active" : ""}>
+            <li className={pathname.includes("/favourites") ? "active" : ""}>
+              <Link to="/patient/favourites">
+                <i className="fas fa-bookmark"></i>
+                <span>Favourites</span>
+              </Link>
+            </li>
+            <li className={pathname.includes("/orders") ? "active" : ""}>
+              <Link to="/patient/orders">
+                <i className="fas fa-list-alt"></i>
+                <span>Booking</span>
+                <small className="unread-msg">7</small>
+              </Link>
+            </li>
+            {/* <li className={pathname.includes("/chat-doctor") ? "active" : ""}>
               <Link to="/patient/patient-chat">
                 <i className="fas fa-comments"></i>
                 <span>Message</span>
@@ -156,13 +164,6 @@ export const DashboardSidebar = () => {
               <Link to="/patient/accounts">
                 <i className="fas fa-file-invoice-dollar"></i>
                 <span>Accounts</span>
-              </Link>
-            </li>
-            <li className={pathname.includes("/orders") ? "active" : ""}>
-              <Link to="/patient/orders">
-                <i className="fas fa-list-alt"></i>
-                <span>Orders</span>
-                <small className="unread-msg">7</small>
               </Link>
             </li>
             <li
@@ -194,12 +195,17 @@ export const DashboardSidebar = () => {
                 <i className="fas fa-lock"></i>
                 <span>Change Password</span>
               </Link>
-            </li>
+            </li> */}
             <li>
-              <Link to="/index">
+              <a
+                to="#"
+                onClick={() => {
+                  Utils.logout();
+                }}
+              >
                 <i className="fas fa-sign-out-alt"></i>
                 <span>Logout</span>
-              </Link>
+              </a>
             </li>
           </ul>
         </nav>

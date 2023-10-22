@@ -35,16 +35,11 @@ import Booking2 from "./../client/components/patients/booking/booking2";
 
 import Checkout from "./../client/components/patients/checkout";
 import BookingSuccess from "./../client/components/patients/booking-success";
-import Dashboard from "./../client/components/patients/dashboard";
-import PatientDependent from "./../client/components/patients/dependent";
 import PatientAccounts from "./../client/components/patients/accounts";
-import Orders from "./../client/components/patients/orders";
-import MedicalRecords from "./../client/components/patients/medicalrecords";
 import MedicalDetails from "./../client/components/patients/medicaldetails";
 import Favourties from "./../client/components/patients/dashboard/favourties";
 import Profile from "./../client/components/patients/dashboard/profile";
 import Password from "./../client/components/patients/dashboard/password";
-import DoctorDashboard from "./../client/components/doctors/dashboard";
 import SocialMedia from "./../client/components/doctors/socialmedia";
 import ScheduleTiming from "./../client/components/doctors/scheduletimings";
 import DoctorPassword from "./../client/components/doctors/password";
@@ -143,10 +138,6 @@ import Loginemail from "./../client/components/home/loginemail.jsx";
 import SearchDoctorSpecialist from "./../client/components/pages/searchdoctor/search-doctor-specialist.jsx";
 
 const templateRoute = [
-  {
-    path: "/patient/dependent",
-    component: PatientDependent,
-  },
   // template
   {
     path: "/patient/doctor-grid",
@@ -605,20 +596,8 @@ const templateRoute = [
     component: BookingSuccess,
   },
   {
-    path: "/patient/dashboard",
-    component: Dashboard,
-  },
-  {
     path: "/patient/accounts",
     component: PatientAccounts,
-  },
-  {
-    path: "/patient/orders",
-    component: Orders,
-  },
-  {
-    path: "/patient/medicalrecords",
-    component: MedicalRecords,
   },
   {
     path: "/patient/medicaldetails",
@@ -635,10 +614,6 @@ const templateRoute = [
   {
     path: "/patient/change-password",
     component: Password,
-  },
-  {
-    path: "/doctor/doctor-dashboard",
-    component: DoctorDashboard,
   },
   {
     path: "/doctor/social-media",

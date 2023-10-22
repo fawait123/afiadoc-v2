@@ -14,6 +14,7 @@ import { afia_logo } from "./imagepath";
 import Chart from "./patients/dashboard/chart";
 import Notification from "./patients/dashboard/notification";
 import useGlobalStore from "../../STORE/GlobalStore";
+import Utils from "../../helpers/utils";
 
 const Header = () => {
   const { user, photo, token } = useGlobalStore((state) => state);
@@ -143,7 +144,7 @@ const Header = () => {
               ? { background: "rgb(43, 108, 203)" }
               : { background: "" } && pathnames.includes("/home") && navbar
               ? { background: "rgb(255, 255, 255)" }
-              : { background: "" }
+              : { background: "", zIndex: 9 }
           }
         >
           <div className="container">
@@ -188,10 +189,11 @@ const Header = () => {
               </div>
               <div className="main-menu-wrapper">
                 <div className="menu-header">
-                  <Link to="/home" className="menu-logo">
+                  <Link to="/" className="menu-logo">
                     <img
                       src={logo}
                       className="img-fluid"
+                      width={40}
                       alt="Logo"
                       style={{ objectFit: "contain" }}
                     />
@@ -205,8 +207,29 @@ const Header = () => {
                     <i className="fas fa-times"></i>
                   </Link>
                 </div>
+                <ul className="main-nav">
+                  <li className={pathnames == "/" ? "active" : ""}>
+                    <Link to="/">
+                      <span>Home</span>
+                    </Link>
+                  </li>
+                  <li
+                    className={pathnames.includes("/doctors") ? "active" : ""}
+                  >
+                    <Link to="/doctors">
+                      <span>Dokter</span>
+                    </Link>
+                  </li>
+                  <li
+                    className={pathnames.includes("/articles") ? "active" : ""}
+                  >
+                    <Link to="/">
+                      <span>Artikel</span>
+                    </Link>
+                  </li>
+                </ul>
 
-                <ul
+                {/* <ul
                   className={`main-nav ${
                     pathnames.includes("home4") ? "white-font" : ""
                   }`}
@@ -700,11 +723,10 @@ const Header = () => {
                       ""
                     )}
                   </li>
-                </ul>
+                </ul> */}
               </div>
               {token ? (
                 <ul className="nav header-navbar-rht">
-                  <Chart />
                   <Notification />
                   <li className="nav-item dropdown has-arrow logged-item">
                     <Link
@@ -741,9 +763,15 @@ const Header = () => {
                       <Link className="dropdown-item" to="/patient/profile">
                         Profile Settings
                       </Link>
-                      <Link className="dropdown-item" to="/login">
+                      <a
+                        className="dropdown-item"
+                        href="#"
+                        onClick={() => {
+                          Utils.logout();
+                        }}
+                      >
                         Logout
-                      </Link>
+                      </a>
                     </div>
                   </li>
                 </ul>

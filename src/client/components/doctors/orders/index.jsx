@@ -2,8 +2,8 @@ import React from "react";
 import DashboardSidebar from "../dashboard/sidebar/sidebar.jsx";
 import StickyBox from "react-sticky-box";
 import { Link } from "react-router-dom";
-import Header from "../../header";
-import Footer from "../../footer";
+import Header from "../../header.jsx";
+import Footer from "../../footer.jsx";
 import Tablerecords from "./tablerecords.jsx";
 
 const Orders = (props) => {

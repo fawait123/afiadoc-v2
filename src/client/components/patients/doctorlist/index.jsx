@@ -8,6 +8,7 @@ import MyComponent from "../../pages/searchdoctor/searchList/mycomponent";
 import httpRequest from "../../../../API/http";
 import { IMAGEPATH } from "../../../../config";
 import Utils from "../../../../helpers/utils";
+import { FiList, FiMapPin } from "react-icons/fi";
 
 // const data = [
 //   {
@@ -152,26 +153,22 @@ const DoctorList = (props) => {
         <div className="container-fluid">
           <div className="row">
             <div className="col-xl-7 col-lg-12 order-md-last order-sm-last order-last map-left">
-              <div className="row align-items-center mb-4">
+              <div className="row align-items-center justify-content-center">
                 <div className="col-md-6 col">
                   <h4>2245 Doctors found</h4>
                 </div>
-                <div className="col-md-6 col-auto">
+                <div className="col-md-6 mx-auto mb-3">
                   <div className="view-icons">
-                    <Link
-                      to="/patient/doctor-grid"
-                      className="grid-view active"
-                    >
-                      <i className="fas fa-th-large"></i>
-                    </Link>
-                    <Link to="/patient/doctor-list" className="list-view">
-                      <i className="fas fa-bars"></i>
-                    </Link>
-                  </div>
-                  <div className="sort-by d-sm-block d-none">
-                    <span className="sortby-fliter">
-                      <Select options={options} />
-                    </span>
+                    <li style={{ listStyle: "none" }}>
+                      <Link to="/doctors/map" id="map-list" className="active">
+                        <FiMapPin />
+                      </Link>
+                    </li>
+                    <li style={{ listStyle: "none" }}>
+                      <Link to="/doctors">
+                        <FiList />
+                      </Link>
+                    </li>
                   </div>
                 </div>
               </div>

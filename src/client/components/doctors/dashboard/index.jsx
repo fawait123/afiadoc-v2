@@ -1,14 +1,12 @@
 import React from "react";
 import DoctorSidebar from "../sidebar";
-import { Link } from "react-router-dom";
 import Footer from "../../footer";
 import ProgressBar from "react-customizable-progressbar";
 import StickyBox from "react-sticky-box";
 import { Icon01, Icon02, Icon03 } from "./img";
 import Breadcrumbs from "../../breadcrumb";
 import Header from "../../header";
-import UpcomingTab from "./upcomimgtab";
-import AppointmentTab from "./appoitmenttab";
+import Tablerecords from "../booking/tablerecords";
 const DoctorDashboard = (props) => {
   return (
     <div>
@@ -159,34 +157,9 @@ const DoctorDashboard = (props) => {
               <div className="row">
                 <div className="col-md-12">
                   <h4 className="mb-4">Patient Appoinment</h4>
-                  <div className="appointment-tab">
-                    {/* Appointment Tab */}
-                    <ul className="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
-                      <li className="nav-item">
-                        <Link
-                          className="nav-link active"
-                          to="#upcoming-appointments"
-                          data-bs-toggle="tab"
-                        >
-                          Upcoming
-                        </Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link
-                          className="nav-link"
-                          to="#today-appointments"
-                          data-bs-toggle="tab"
-                        >
-                          Today
-                        </Link>
-                      </li>
-                    </ul>
-                    {/* /Appointment Tab */}
-                    <div className="tab-content">
-                      {/* Upcoming Appointment Tab */}
-                      <UpcomingTab />
-                      {/* Today Appointment Tab */}
-                      <AppointmentTab />
+                  <div className="row">
+                    <div className="col-md-12">
+                      <Tablerecords />
                     </div>
                   </div>
                 </div>

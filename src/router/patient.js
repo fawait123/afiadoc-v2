@@ -40,11 +40,16 @@ import DoctorRegister from "./../client/components/doctors/register";
 import Terms from "./../client/components/pages/terms";
 import Policy from "./../client/components/pages/policy";
 import Booking2 from "./../client/components/patients/booking/booking2.jsx";
+import PatientDependent from "./../client/components/patients/dependent";
 
 const patientRoute = [
   {
     path: "/patient/dashboard",
     component: Dashboard,
+  },
+  {
+    path: "/patient/only",
+    component: PatientDependent,
   },
   // template
   {

@@ -4,131 +4,143 @@ import { Link } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import StickyBox from "react-sticky-box";
 import Footer from "../../footer";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Header from "../../header.jsx";
 import httpRequest from "../../../../API/http.js";
-import { Form, Image, Row, Table } from "antd";
+import { Form, Image, Row, Select, Table, Modal as ModalAntd } from "antd";
 import { FaPencil, FaTrash } from "react-icons/fa6";
 import { InputCustom } from "../../../../componentcustom/inputCustom.js";
-
-const columns = [
-  {
-    title: <strong>NIK</strong>,
-    dataIndex: "NIK",
-    key: "NIK",
-    render: (text) => <span>{text}</span>,
-  },
-  {
-    title: <strong>Nama</strong>,
-    dataIndex: "name",
-    key: "name",
-    render: (text, record) => {
-      return (
-        <Row justify={"start"} align={"middle"}>
-          <Image
-            width={80}
-            height={80}
-            style={{ objectFit: "contain", borderRadius: 50 }}
-            src={record?.photo}
-          />
-          <span>{text}</span>
-        </Row>
-      );
-    },
-  },
-  {
-    title: <strong>Tanggal Lahir</strong>,
-    dataIndex: "birthdate",
-    key: "birthdate",
-    render: (text, record) => <span>{`${record?.placebirth}, ${text}`}</span>,
-  },
-  {
-    title: <strong>Jenis Kelamin</strong>,
-    dataIndex: "gender",
-    key: "gender",
-    render: (text) => <span>{text == "L" ? "Laki Laki" : "Perempuan"}</span>,
-  },
-  {
-    title: <strong>Agama</strong>,
-    dataIndex: "religion",
-    key: "religion",
-    render: (text) => <span>{text}</span>,
-  },
-  {
-    title: <strong>Email</strong>,
-    dataIndex: "email",
-    key: "email",
-    render: (text) => <span>{text}</span>,
-  },
-  {
-    title: <strong>No. Handphone</strong>,
-    dataIndex: "phone",
-    key: "phone",
-    render: (text) => <span>{text}</span>,
-  },
-  {
-    title: <strong>Golongan Darah</strong>,
-    dataIndex: "blood",
-    key: "blood",
-    render: (text) => <span>{text}</span>,
-  },
-  {
-    title: <strong>Berat Badan</strong>,
-    dataIndex: "weight",
-    key: "weight",
-    render: (text) => <span>{text}</span>,
-  },
-  {
-    title: <strong>Tinggi Badan</strong>,
-    dataIndex: "height",
-    key: "height",
-    render: (text) => <span>{text}</span>,
-  },
-  {
-    title: <strong>Aksi</strong>,
-    key: "action",
-    render: (_, record) => {
-      return (
-        <>
-          <FaPencil className="text-primary" style={{ cursor: "pointer" }} />{" "}
-          &nbsp;&nbsp;&nbsp;
-          <FaTrash className="text-danger" style={{ cursor: "pointer" }} />
-        </>
-      );
-    },
-  },
-];
+import {
+  itemRender,
+  onShowSizeChange,
+} from "../../../../admin/components/paginationfunction.js";
+import useGlobalStore from "../../../../STORE/GlobalStore/index.js";
 
 const Dependent = (props) => {
-  const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
-  const [edit, setEdit] = useState(false);
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [count, setCount] = useState(0);
+  const { loadingTable, setLoadingTable } = useGlobalStore((state) => state);
+  const [detail, setDetail] = useState({});
+  const [showConfirm, setShowConfirm] = useState(false);
 
-  const getData = () => {
+  const columns = [
+    {
+      title: "NIK",
+      render: (record) => <span>{record?.NIK}</span>,
+    },
+    {
+      title: "Nama Pasien",
+      render: (text, record) => {
+        return (
+          <Row justify={"start"} align={"middle"}>
+            <Image
+              width={80}
+              height={80}
+              style={{ objectFit: "contain", borderRadius: 50 }}
+              src={record?.photo}
+            />
+            <span>{record?.name}</span>
+          </Row>
+        );
+      },
+    },
+    {
+      title: "Tanggal Lahir",
+      render: (record) => (
+        <span>{`${record?.placebirth}, ${record?.birthdate}`}</span>
+      ),
+    },
+    {
+      title: "Jenis Kelamin",
+      render: (record) => (
+        <span>{record?.gender == "L" ? "Laki Laki" : "Perempuan"}</span>
+      ),
+    },
+    {
+      title: "Agama",
+      render: (record) => <span>{record?.religion}</span>,
+    },
+    {
+      title: "Email",
+      render: (record) => <span>{record?.email}</span>,
+    },
+    {
+      title: "No. Handphone",
+      render: (record) => <span>{record?.phone}</span>,
+    },
+    {
+      title: "Golongan Darah",
+      render: (record) => <span>{record?.blood}</span>,
+    },
+    {
+      title: "Berat Badan",
+      render: (record) => <span>{record?.weight}</span>,
+    },
+    {
+      title: "Tinggi Badan",
+      render: (record) => <span>{record?.height}</span>,
+    },
+    {
+      title: "Aksi",
+      key: "action",
+      render: (record) => {
+        console.log(record);
+        return (
+          <>
+            <FaPencil
+              className="text-primary"
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setDetail(record);
+                setShow(true);
+              }}
+            />
+            &nbsp;&nbsp;
+            <FaTrash
+              className="text-danger"
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setDetail(record);
+                setShowConfirm(true);
+              }}
+            />
+          </>
+        );
+      },
+    },
+  ];
+
+  const getData = (pageData = null, limitData = null, search) => {
+    setLoadingTable(true);
     httpRequest({
       url: "/admin/patient",
       method: "get",
       params: {
-        page,
-        limit,
+        page: pageData ? pageData : page,
+        limit: limitData ? limitData : limit,
+        search,
       },
-    }).then((response) => {
-      const result = response?.data?.results?.data?.rows;
-      setRows(result);
-    });
+    })
+      .then((response) => {
+        const result = response?.data?.results?.data?.rows;
+        setRows(result);
+        setPage(response?.data?.results?.data?.page);
+        setLimit(response?.data?.results?.data?.limit);
+        setCount(response?.data?.results?.data?.count);
+        setLoadingTable(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoadingTable(false);
+      });
   };
 
   useEffect(() => {
     getData();
   }, []);
-  const handleChange = (date) => {
-    setDate(date);
-  };
 
   return (
     <div>
@@ -164,19 +176,28 @@ const Dependent = (props) => {
               <div className="card">
                 <div className="card-header">
                   <div className="row">
-                    <div className="col-sm-6">
-                      <h3 className="card-title">Data Pasien</h3>
-                    </div>
-                    <div className="col-sm-6">
-                      <div className="text-end">
+                    <div className="col-sm-8">
+                      <div className="col-md-8">
                         <a
                           href="#modal_form"
                           onClick={() => setShow(true)}
                           className="btn btn-primary btn-sm"
                           tabIndex={0}
                         >
-                          Tambah Pasien
+                          Tambah Spesialis
                         </a>
+                      </div>
+                    </div>
+                    <div className="col-sm-4">
+                      <div className="text-end">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Cari data spesialis..."
+                          onChange={(e) => {
+                            getData(1, 10, e.target.value);
+                          }}
+                        />
                       </div>
                     </div>
                   </div>
@@ -185,12 +206,31 @@ const Dependent = (props) => {
                   {/* Dependent Tab */}
                   <div className="card card-table mb-0">
                     <div className="card-body">
-                      <Table
-                        columns={columns}
-                        dataSource={rows}
-                        style={{ overflow: "scroll" }}
-                      />
-                      ;
+                      <div className="table-responsive">
+                        <Table
+                          loading={loadingTable}
+                          pagination={{
+                            total: count,
+                            current: page,
+                            pageSize: limit,
+                            showTotal: (total, range) =>
+                              `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                            showSizeChanger: true,
+                            onShowSizeChange: onShowSizeChange,
+                            itemRender: itemRender,
+                            onChange: (page, pageSize) => {
+                              // setPage(page);
+                              // setLimit(pageSize);
+                              getData(page, pageSize);
+                            },
+                          }}
+                          style={{ overflowX: "auto" }}
+                          columns={columns}
+                          dataSource={rows}
+                          rowKey={(record) => record.id}
+                          //  onChange={this.handleTableChange}
+                        />
+                      </div>
                     </div>
                   </div>
                   {/* /Dependent Tab */}
@@ -200,9 +240,13 @@ const Dependent = (props) => {
           </div>
         </div>
       </div>
+      {/* modal form */}
       <Modal
-        show={show}
-        onHide={() => setShow(false)}
+        show={false}
+        onHide={() => {
+          setDetail({});
+          setShow(false);
+        }}
         className="modal"
         style={{ marginTop: "80px" }}
       >
@@ -212,115 +256,66 @@ const Dependent = (props) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="modal-body">
-            <div className="modal-body">
-              <Form layout="vertical">
-                <InputCustom
-                  label={"Name"}
-                  name={"name"}
-                  rules={[{ required: true }]}
-                />
-              </Form>
-            </div>
-            <div className="modal-footer text-center">
-              <button type="submit" className="btn btn-primary submit-btn">
-                Save Changes
-              </button>
-            </div>
-          </div>
+          <Form layout="vertical">
+            <InputCustom
+              label={"Name"}
+              name={"name"}
+              rules={[{ required: true }]}
+            />
+            <Form.Item>
+              <Select>
+                <Select.Option>halo</Select.Option>
+              </Select>
+            </Form.Item>
+          </Form>
         </Modal.Body>
       </Modal>
-      {/* <!-- Edit Dependent Modal--> */}
-      <div
-        id="edit_form"
-        className="modal fade custom-modal"
-        tabIndex="-1"
-        role="dialog"
-        aria-modal="true"
-        // eslint-disable-next-line react/no-unknown-property
-        show={edit}
-        onClick={() => setEdit(false)}
+
+      {/* modal confirm */}
+      <Modal
+        show={showConfirm}
+        onHide={() => {
+          setDetail({});
+          setShowConfirm(false);
+        }}
+        className="modal"
+        style={{ marginTop: "80px" }}
       >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <form
-              action="#"
-              encType="multipart/form-data"
-              autoComplete="off"
-              method="post"
-            >
-              <div className="modal-header">
-                <h5 className="modal-title">Edit member</h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <div className="form-group">
-                  <label className="control-label mb-10">
-                    {" "}
-                    Name <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    className="form-control"
-                    defaultValue="Christopher"
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="control-label mb-10">Relationship </label>
-                  <input
-                    type="text"
-                    name="relationship"
-                    className="form-control"
-                    defaultValue="son"
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="control-label mb-10">Gender </label>
-                  <select className="form-select form-control" name="gender">
-                    <option defaultValue="">Select</option>
-                    <option defaultValue="Male" selected>
-                      Male
-                    </option>
-                    <option defaultValue="Female">Female</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label className="control-label mb-10">DOB </label>
-                  <DatePicker
-                    name="dob"
-                    id="editdob"
-                    selected={date}
-                    onChange={handleChange}
-                    className="form-control date-icon"
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="control-label mb-10">Photo </label>
-                  <input
-                    type="file"
-                    name="profile_image"
-                    className="form-control"
-                  />
-                </div>
-              </div>
-              <div className="modal-footer text-center">
-                <button type="submit" className="btn btn-primary submit-btn">
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      {/* <!-- /Edit Dependent Modal--> */}
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <h5 className="modal-title">KONFIRMASI</h5>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>apakah anda yakin ingin menghapus data {detail?.name} ?</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <button className="btn btn-danger btn-sm">IYA</button>
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={() => {
+              setDetail({});
+              setShowConfirm(false);
+            }}
+          >
+            TIDAK
+          </button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* modal antd */}
+      <ModalAntd
+        title="Basic Modal"
+        open={show}
+        onOk={() => null}
+        onCancel={() => null}
+      >
+        <Form.Item>
+          <Select>
+            <Select.Option>ajksdjh</Select.Option>
+          </Select>
+        </Form.Item>
+      </ModalAntd>
       <Footer {...props} />
     </div>
   );

@@ -1,12 +1,12 @@
 import React from "react";
-import DashboardSidebar from "../dashboard/sidebar/sidebar.jsx";
 import StickyBox from "react-sticky-box";
+import DoctorSidebar from "../sidebar";
 import { Link } from "react-router-dom";
-import Header from "../../header";
-import Footer from "../../footer";
+import Header from "../../header.jsx";
+import Footer from "../../footer.jsx";
 import Tablerecords from "./tablerecords.jsx";
 
-const Orders = (props) => {
+const Booking = (props) => {
   return (
     <div>
       <Header {...props} />
@@ -34,7 +34,7 @@ const Orders = (props) => {
           <div className="row">
             <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
               <StickyBox offsetTop={20} offsetBottom={20}>
-                <DashboardSidebar />{" "}
+                <DoctorSidebar />
               </StickyBox>
             </div>
             <div className="col-md-7 col-lg-8 col-xl-9">
@@ -49,4 +49,4 @@ const Orders = (props) => {
   );
 };
 
-export default Orders;
+export default Booking;

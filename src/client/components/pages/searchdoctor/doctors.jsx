@@ -44,13 +44,6 @@ const Doctors = ({ datas = [] }) => {
             <div className="doctor-filter-sort">
               <p>Sort</p>
               <div className="doctor-filter-select">
-                {/* <select className="select">
-              <option>A to Z</option>
-              <option>B to Z</option>
-              <option>C to Z</option>
-              <option>D to Z</option>
-              <option>E to Z</option>
-            </select> */}
                 <Select2
                   className="select w-100"
                   defaultValue={1}
@@ -75,17 +68,12 @@ const Doctors = ({ datas = [] }) => {
             <div className="doctor-filter-sort">
               <ul className="nav">
                 <li>
-                  <Link to="/patient/doctor-list" id="map-list">
+                  <Link to="/doctors/map" id="map-list">
                     <FiMapPin />
                   </Link>
                 </li>
                 <li>
-                  <Link to="/patient/doctor-grid">
-                    <FiGrid />
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/patient/doctor-list" className="active">
+                  <Link to="/doctors" className="active">
                     <FiList />
                   </Link>
                 </li>
@@ -117,7 +105,7 @@ const Doctors = ({ datas = [] }) => {
                   </div>
                   <div className="doc-info-cont">
                     <h4 className="doc-name">
-                      <Link to="/patient/doctor-profile">Dr.{item?.name}</Link>
+                      <Link to="/patient/doctor-profile">Dr. {item?.name}</Link>
                       <i className="fas fa-circle-check" />
                     </h4>
                     <p className="doc-speciality">{item?.specialist?.name}</p>

@@ -6,11 +6,9 @@ import { Formik } from "formik";
 import validationLogin from "../../../validation/login";
 import ButtonCustom from "../../../componentcustom/buttonCustom";
 import httprequest from "../../../API/http";
-import { useHistory } from "react-router-dom";
 
 const LoginContainer = () => {
   const { setLoadingBtn, loadingBtn } = useGlobalStore((state) => state);
-  const navigate = useHistory();
 
   useEffect(() => {
     document.body.classList.add("account-page");
@@ -66,11 +64,10 @@ const LoginContainer = () => {
                             localStorage.setItem("photo", photo);
                             localStorage.setItem("token", token);
                             if (role === "pengguna") {
-                              navigate.push("/patient/dashboard");
+                              window.location.href = "/patient/dashboard";
                             } else if (role === "dokter") {
-                              navigate.push("/doctor/doctor-dashboard");
+                              window.location.href = "/doctor/dashboard";
                             } else {
-                              // navigate.push("/admin");
                               window.location.href = "/admin";
                             }
                           })
