@@ -10,6 +10,9 @@ import useGlobalStore from "../../../STORE/GlobalStore";
 import { IMAGEPATH } from "../../../config";
 import { Modal } from "react-bootstrap";
 import { FaPencil, FaTrash } from "react-icons/fa6";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { object, string, mixed } from "yup";
 
 const Specialist = () => {
   const [limit, setLimit] = useState(10);
@@ -21,12 +24,103 @@ const Specialist = () => {
   const [detail, setDetail] = useState({});
   const [showConfirm, setShowConfirm] = useState(false);
 
+  const schema = object().shape({
+    name: string().required("Name is required"),
+    picture: mixed().test("fileType", "Unsupported file format", (value) => {
+      console.log(value);
+      if (value.length > 0) {
+        return [
+          "image/jpg",
+          "image/png",
+          "image/svg",
+          "image/jpeg",
+          "image/svg+xml",
+        ].includes(value[0].type);
+      }
+
+      return Object.keys(detail).length > 0 ? true : false;
+    }),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data) => {
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("picture", data.picture[0]);
+      httpRequest({
+        url: "/admin/specialist",
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        data: formData,
+      })
+        .then((response) => {
+          console.log(response);
+          setShow(false);
+          reset();
+          getData();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onEdit = (data) => {
+    try {
+      const formData = new FormData();
+      formData.append("name", data.name);
+      if (data.picture.length > 0) {
+        formData.append("picture", data.picture[0]);
+      }
+      httpRequest({
+        url: "/admin/specialist",
+        method: "put",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        data: formData,
+        params: {
+          id: detail?.id,
+        },
+      })
+        .then((response) => {
+          console.log(response);
+          setShow(false);
+          reset();
+          getData();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const columns = [
     {
       title: "Nama Spesialis",
       render: (record) => (
         <>
-          <img className="rounded-circle" src={IMAGEPATH + record?.picture} />
+          <img
+            className="rounded-circle"
+            style={{ width: 80, height: 80, objectFit: "contain" }}
+            src={IMAGEPATH + record?.picture}
+          />
           <strong>{record?.name}</strong>
         </>
       ),
@@ -49,6 +143,7 @@ const Specialist = () => {
           <>
             <FaPencil
               onClick={() => {
+                setValue("name", record?.name);
                 setDetail(record);
                 setShow(true);
               }}
@@ -102,6 +197,7 @@ const Specialist = () => {
   useEffect(() => {
     getData();
   }, []);
+  console.log(errors);
   return (
     <>
       <SidebarNav />
@@ -192,47 +288,73 @@ const Specialist = () => {
       <Modal
         show={show}
         onHide={() => {
+          setValue("name", null);
           setDetail({});
           setShow(false);
+          reset();
         }}
         className="modal"
         style={{ marginTop: "80px" }}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>
-            <h5 className="modal-title">Tambah Data Dokter</h5>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="modal-body">
-            <div className="form-group">
-              <label className="control-label mb-10">
-                {" "}
-                Name <span className="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                name="name"
-                className="form-control"
-                defaultValue="Christopher"
-              />
+        <form
+          onSubmit={handleSubmit(
+            Object.keys(detail).length > 0 ? onEdit : onSubmit
+          )}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>
+              <h5 className="modal-title">
+                {Object.keys(detail).length > 0 ? "Edit" : "Tambah"} Data
+                Spesialis
+              </h5>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="modal-body">
+              <div className="form-group">
+                <label className="control-label mb-10">
+                  {" "}
+                  Name <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  {...register("name", {
+                    required: "Name is required",
+                  })}
+                  placeholder="Please input name"
+                  className={`form-control ${errors.name && "is-invalid"}`}
+                />
+                {errors.name && (
+                  <div className="invalid-feedback">{errors.name.message}</div>
+                )}
+              </div>
+              <div className="form-group">
+                <label className="control-label mb-10">
+                  Image <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="file"
+                  {...register("picture", { required: "Picture is required" })}
+                  className={`form-control ${errors.picture && "is-invalid"}`}
+                />
+                {errors.picture && (
+                  <div className="invalid-feedback">
+                    {errors.picture.message}
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="form-group">
-              <label className="control-label mb-10">Relationship </label>
-              <input
-                type="text"
-                name="relationship"
-                className="form-control"
-                defaultValue="son"
-              />
-            </div>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <button type="submit" className="btn btn-primary submit-btn">
-            Simpan
-          </button>
-        </Modal.Footer>
+          </Modal.Body>
+          <Modal.Footer>
+            <button
+              type="submit"
+              className="btn btn-primary submit-btn"
+              onClick={handleSubmit}
+            >
+              {Object.keys(detail).length > 0 ? "Ubah" : "Simpan"}
+            </button>
+          </Modal.Footer>
+        </form>
       </Modal>
 
       {/* modal confirm */}
@@ -254,7 +376,25 @@ const Specialist = () => {
           <p>apakah anda yakin ingin menghapus data {detail?.name} ?</p>
         </Modal.Body>
         <Modal.Footer>
-          <button className="btn btn-danger btn-sm">IYA</button>
+          <button
+            className="btn btn-danger btn-sm"
+            onClick={() => {
+              httpRequest({
+                url: "/admin/specialist",
+                method: "delete",
+                params: {
+                  id: detail?.id,
+                },
+              }).then((response) => {
+                console.log(response);
+                setDetail({});
+                setShowConfirm(false);
+                getData();
+              });
+            }}
+          >
+            IYA
+          </button>
           <button
             className="btn btn-primary btn-sm"
             onClick={() => {

@@ -1,123 +1,105 @@
-import React from 'react';
-import { client_01, client_02, client_03, client_04 } from '../../imagepath';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import httpRequest from "../../../../API/http";
+import moment from "moment";
+import { FaBell } from "react-icons/fa6";
+import socketClient from "../../../../libraries/socket-client";
+import { notification } from "antd";
+import useGlobalStore from "../../../../STORE/GlobalStore";
 
 function Notification() {
+  const [count, setCount] = useState(0);
+  const [data, setData] = useState([]);
+  const { user } = useGlobalStore((state) => state);
+  const handleNotification = (type, title, text) => {
+    notification.config({
+      placement: "topRight",
+    });
+    notification[type]({
+      message: title,
+      description: text,
+    });
+  };
+  const getData = () => {
+    httpRequest({
+      url: "/admin/notification",
+      method: "get",
+      params: {
+        page: 1,
+        limit: 10,
+        isRead: false,
+      },
+    })
+      .then((response) => {
+        const results = response?.data?.results?.data;
+        setCount(results?.count);
+        setData(results?.rows);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+    socketClient.on("push-notification", (data) => {
+      const parseData = JSON.parse(data);
+      getData();
+      console.log(user);
+      if (parseData?.userID == user?.id) {
+        handleNotification("info", parseData?.title, parseData?.content);
+      }
+    });
+  }, []);
   return (
     <>
-    {/* Notifications */}
-    <li className="nav-item dropdown noti-nav me-3 pe-0">
-      <Link
-        to="#"
-        className="dropdown-toggle nav-link p-0"
-        data-bs-toggle="dropdown"
-      >
-        <i className="fa-solid fa-bell" /> <span className="badge">5</span>
-      </Link>
-      <div className="dropdown-menu notifications dropdown-menu-end ">
-        <div className="topnav-dropdown-header">
-          <span className="notification-title">Notifications</span>
+      {/* Notifications */}
+      <li className="nav-item dropdown noti-nav me-3 pe-0">
+        <Link
+          to="#"
+          className="dropdown-toggle nav-link p-0"
+          data-bs-toggle="dropdown"
+        >
+          <i className="fa-solid fa-bell" />{" "}
+          <span className="badge">{count}</span>
+        </Link>
+        <div className="dropdown-menu notifications dropdown-menu-end ">
+          <div className="topnav-dropdown-header">
+            <span className="notification-title">Notifications</span>
+          </div>
+          <div className="noti-content">
+            <ul className="notification-list">
+              {data.map((item, index) => {
+                return (
+                  <li className="notification-message" key={index}>
+                    <Link to="#">
+                      <div className="media d-flex">
+                        <span className="avatar">
+                          <FaBell style={{ fontSize: 16 }} />
+                        </span>
+                        <div className="media-body">
+                          <h6>
+                            {item?.title}{" "}
+                            <span className="notification-time text-sm">
+                              {moment(item?.createdAt).format("DD MMMM YYYY") +
+                                " " +
+                                moment(item?.createdAt).format("HH:MM")}{" "}
+                              WIB
+                            </span>
+                          </h6>
+                          <p className="noti-details">{item?.content}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
-        <div className="noti-content">
-          <ul className="notification-list">
-            <li className="notification-message">
-              <Link to="#">
-                <div className="media d-flex">
-                  <span className="avatar">
-                    <img
-                      className="avatar-img"
-                      alt=""
-                      src={client_01}
-                    />
-                  </span>
-                  <div className="media-body">
-                    <h6>
-                      Travis Tremble{" "}
-                      <span className="notification-time">18.30 PM</span>
-                    </h6>
-                    <p className="noti-details">
-                      Sent a amount of $210 for his Appointment{" "}
-                      <span className="noti-title">Dr.Ruby perin </span>
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            </li>
-            <li className="notification-message">
-              <Link to="#">
-                <div className="media d-flex">
-                  <span className="avatar">
-                    <img
-                      className="avatar-img"
-                      alt=""
-                      src={client_02}
-                    />
-                  </span>
-                  <div className="media-body">
-                    <h6>
-                      Travis Tremble{" "}
-                      <span className="notification-time">12 Min Ago</span>
-                    </h6>
-                    <p className="noti-details">
-                      {" "}
-                      has booked her appointment to{" "}
-                      <span className="noti-title">Dr. Hendry Watt</span>
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            </li>
-            <li className="notification-message">
-              <Link to="#">
-                <div className="media d-flex">
-                  <div className="avatar">
-                    <img
-                      className="avatar-img"
-                      alt=""
-                      src={client_03}
-                    />
-                  </div>
-                  <div className="media-body">
-                    <h6>
-                      Travis Tremble{" "}
-                      <span className="notification-time">6 Min Ago</span>
-                    </h6>
-                    <p className="noti-details">
-                      {" "}
-                      Sent a amount $210 for his Appointment{" "}
-                      <span className="noti-title">Dr.Maria Dyen</span>
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            </li>
-            <li className="notification-message">
-              <Link to="#">
-                <div className="media d-flex">
-                  <div className="avatar avatar-sm">
-                    <img
-                      className="avatar-img"
-                      alt=""
-                      src={client_04}
-                    />
-                  </div>
-                  <div className="media-body">
-                    <h6>
-                      Travis Tremble{" "}
-                      <span className="notification-time">8.30 AM</span>
-                    </h6>
-                    <p className="noti-details"> Send a message to his doctor</p>
-                  </div>
-                </div>
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </li>
-    {/* /Notifications */}
-  </>
-  
+      </li>
+      {/* /Notifications */}
+    </>
   );
 }
 

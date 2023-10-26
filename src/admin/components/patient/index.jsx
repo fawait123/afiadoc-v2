@@ -9,7 +9,6 @@ import httpRequest from "../../../API/http";
 import useGlobalStore from "../../../STORE/GlobalStore";
 import { IMAGEPATH } from "../../../config";
 import { Modal } from "react-bootstrap";
-import { FaPencil, FaTrash } from "react-icons/fa6";
 
 const Patient = () => {
   const [limit, setLimit] = useState(10);
@@ -123,29 +122,39 @@ const Patient = () => {
       sorter: (a, b) => a.length - b.length,
     },
     {
-      title: "Aksi",
+      title: "Status",
       sorter: (a, b) => a.length - b.length,
       render: (record) => {
         return (
-          <>
-            <FaPencil
-              onClick={() => {
-                setDetail(record);
-                setShow(true);
-              }}
-              className="text-primary"
-              style={{ cursor: "pointer" }}
-            />{" "}
-            &nbsp;
-            <FaTrash
-              className="text-danger"
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                setDetail(record);
-                setShowConfirm(true);
+          <div className="status-toggle">
+            <input
+              id={`rating${record?.id}`}
+              className="check"
+              type="checkbox"
+              defaultChecked={record?.isActive}
+              onChange={() => {
+                httpRequest({
+                  url: "/admin/patient/status",
+                  method: "put",
+                  params: {
+                    id: record?.id,
+                  },
+                })
+                  .then((response) => {
+                    console.log(response);
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                  });
               }}
             />
-          </>
+            <label
+              htmlFor={`rating${record?.id}`}
+              className="checktoggle checkbox-bg"
+            >
+              checkbox
+            </label>
+          </div>
         );
       },
     },
@@ -210,16 +219,7 @@ const Patient = () => {
                 <div className="card-header">
                   <div className="row">
                     <div className="col-sm-8">
-                      <div className="col-md-8">
-                        <a
-                          href="#modal_form"
-                          onClick={() => setShow(true)}
-                          className="btn btn-primary btn-sm"
-                          tabIndex={0}
-                        >
-                          Tambah Pasien
-                        </a>
-                      </div>
+                      <div className="col-md-8"></div>
                     </div>
                     <div className="col-sm-4">
                       <div className="text-end">
