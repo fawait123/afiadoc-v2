@@ -1,19 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../header";
 import { Link } from "react-router-dom";
-import {
-  appimg,
-  devicemessage,
-  doctor_01,
-  googleimg,
-  smartphone,
-  todayicon,
-} from "../../imagepath";
+import { appimg, devicemessage, googleimg, smartphone } from "../../imagepath";
 import Footer from "../../footer";
-import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
+import { FaSearchengin } from "react-icons/fa6";
+import { CardQueue } from "./CardQueue";
+import moment from "moment";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import httpRequest from "../../../../API/http";
+import useGlobalStore from "../../../../STORE/GlobalStore";
+import { Spin } from "antd";
 
 const Booking2 = (props) => {
+  const { doctorID } = useParams();
+  const [data, setData] = useState({});
+  const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
+  const [queue, setQueue] = useState([]);
+  const { loadingTable, setLoadingTable, user } = useGlobalStore(
+    (state) => state
+  );
+
+  const getData = async () => {
+    await httpRequest({
+      url: "/public/doctor",
+      method: "get",
+      params: {
+        doctorID: doctorID,
+      },
+    })
+      .then((response) => {
+        const result = response?.data?.results?.data?.rows;
+        setData(result[0] || {});
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const getQueue = async () => {
+    setLoadingTable(true);
+    await httpRequest({
+      url: "/public/registration",
+      method: "get",
+      params: {
+        doctorID: doctorID,
+        date: date,
+      },
+    })
+      .then((response) => {
+        const results = response?.data?.results?.data;
+        setQueue(results);
+        setLoadingTable(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoadingTable(false);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+    getQueue();
+  }, []);
   return (
     <div className="main-wrapper">
       <Header {...props} />
@@ -47,216 +96,77 @@ const Booking2 = (props) => {
               <div className="booking-header">
                 <h4 className="booking-title">Select Available Slots</h4>
               </div>
-              <div className="booking-date choose-date-book">
-                <p>Choose Date</p>
-                <div className="booking-range">
-                  <div className="bookingrange btn">
-                    <img src={todayicon} alt="icons" />
-                    <span></span>
-                    <div className="datepicker-icon">
-                    <DateRangePicker
-                    initialSettings={{
-                      endDate: new Date("2020-08-11T12:30:00.000Z"),
-                      ranges: {
-                        "Last 30 Days": [
-                          new Date("2020-07-12T04:57:17.076Z"),
-                          new Date("2020-08-10T04:57:17.076Z"),
-                        ],
-                        "Last 7 Days": [
-                          new Date("2020-08-04T04:57:17.076Z"),
-                          new Date("2020-08-10T04:57:17.076Z"),
-                        ],
-                        "Last Month": [
-                          new Date("2020-06-30T18:30:00.000Z"),
-                          new Date("2020-07-31T18:29:59.999Z"),
-                        ],
-                        "This Month": [
-                          new Date("2020-07-31T18:30:00.000Z"),
-                          new Date("2020-08-31T18:29:59.999Z"),
-                        ],
-                        Today: [
-                          new Date("2020-08-10T04:57:17.076Z"),
-                          new Date("2020-08-10T04:57:17.076Z"),
-                        ],
-                        Yesterday: [
-                          new Date("2020-08-09T04:57:17.076Z"),
-                          new Date("2020-08-09T04:57:17.076Z"),
-                        ],
-                      },
-                      startDate: new Date("2020-08-10T04:30:00.000Z"),
-                      timePicker: false,
-                    }}>
-                    <input
-                      className="form-control col-4 input-range"
-                      type="text"
-                      style={{border: "none"  }}
-                      // custom="input-range"
-                     
-                    />
-                  </DateRangePicker>
-                  </div>
-                    <i className="fas fa-chevron-down" />
-                  </div>
+              <div className="row align-items-center mb-4">
+                <div className="col-md-10">
+                  <input
+                    type="date"
+                    className="form-control"
+                    defaultValue={date}
+                    onChange={(event) => setDate(event.target.value)}
+                    min={moment().format("YYYY-MM-DD")}
+                    max={moment().add(15, "days").format("YYYY-MM-DD")}
+                  />
+                </div>
+                <div className="col-md-2">
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      getQueue();
+                    }}
+                  >
+                    <FaSearchengin />
+                  </button>
                 </div>
               </div>
-              <div className="card booking-card">
-                <div className="card-body time-slot-card-body">
-                  <div className="schedule-header">
-                    <div className="row">
-                      <div className="col-md-12">
-                        <div className="day-slot">
-                          <ul>
-                            <li className="left-arrow">
-                              <Link to="#0">
-                                <i className="fa fa-chevron-left"></i>
-                              </Link>
-                            </li>
-                            <li>
-                              <span>Monday</span>
-                              <span className="slot-date">sep 5</span>
-                            </li>
-                            <li>
-                              <span>Tuesday</span>
-                              <span className="slot-date">sep 6</span>
-                            </li>
-                            <li>
-                              <span>Wed</span>
-                              <span className="slot-date">sep 7</span>
-                            </li>
-                            <li>
-                              <span>Thurs</span>
-                              <span className="slot-date">sep 8</span>
-                            </li>
-                            <li>
-                              <span>Fri</span>
-                              <span className="slot-date">sep 9</span>
-                            </li>
-                            <li>
-                              <span>Sat</span>
-                              <span className="slot-date">sep 10</span>
-                            </li>
-                            <li>
-                              <span>Sun</span>
-                              <span className="slot-date">sep 11</span>
-                            </li>
-                            <li className="right-arrow">
-                              <Link to="#0">
-                                <i className="fa fa-chevron-right"></i>
-                              </Link>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
+              <div
+                style={{
+                  height: 400,
+                  padding: 15,
+                  marginBottom: 10,
+                  overflow: "scroll",
+                }}
+              >
+                {loadingTable ? (
+                  <div
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                  >
+                    <Spin />
                   </div>
-                  <div className="row" style={{ marginTop: 40 }}>
-                    <div className="col-lg-4 col-md-4">
-                      <div className="time-slot time-slot-blk">
-                        <h4>Morning</h4>
-                        <div className="time-slot-list">
-                          <ul>
-                            <li>
-                              <Link className="timing" to="#">
-                                <span>
-                                  <i className="feather-clock" /> 09:00 - 09:30
-                                </span>
-                              </Link>
-                            </li>
-                            <li>
-                              <Link className="timing" to="#">
-                                <span>
-                                  <i className="feather-clock" /> 10:00 - 10:30
-                                </span>
-                              </Link>
-                            </li>
-                            <li className="time-slot-open time-slot-morning">
-                              <Link className="timing" to="#">
-                                <span>
-                                  <i className="feather-clock" /> 11:00 - 11:30
-                                </span>
-                              </Link>
-                            </li>
-                            <li>
-                              <div className="load-more-timings load-more-morning">
-                                <Link to="#">Load More</Link>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4 col-md-4">
-                      <div className="time-slot time-slot-blk">
-                        <h4>Afternoon</h4>
-                        <div className="time-slot-list">
-                          <ul>
-                            <li>
-                              <Link className="timing" to="#">
-                                <span>
-                                  <i className="feather-clock" /> 12:00 - 12:30
-                                </span>
-                              </Link>
-                            </li>
-                            <li>
-                              <Link className="timing active" to="#">
-                                <span>
-                                  <i className="feather-clock" /> 01:00 - 01:30
-                                </span>
-                              </Link>
-                            </li>
-                            <li className="time-slot-open time-slot-afternoon">
-                              <Link className="timing" to="#">
-                                <span>
-                                  <i className="feather-clock" /> 02:30 - 03:00
-                                </span>
-                              </Link>
-                            </li>
-                            <li>
-                              <div className="load-more-timings load-more-afternoon">
-                                <Link to="#">Load More</Link>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4 col-md-4">
-                      <div className="time-slot time-slot-blk">
-                        <h4>Evening</h4>
-                        <div className="time-slot-list">
-                          <ul>
-                            <li>
-                              <Link className="timing" to="#">
-                                <span>
-                                  <i className="feather-clock" /> 03:00 - 03:30
-                                </span>
-                              </Link>
-                            </li>
-                            <li>
-                              <Link className="timing" to="#">
-                                <span>
-                                  <i className="feather-clock" /> 04:00 - 04:30
-                                </span>
-                              </Link>
-                            </li>
-                            <li className="time-slot-open time-slot-evening">
-                              <Link className="timing" to="#">
-                                <span>
-                                  <i className="feather-clock" /> 05:00 - 05:30
-                                </span>
-                              </Link>
-                            </li>
-                            <li>
-                              <div className="load-more-timings load-more-evening">
-                                <Link to="#">Load More</Link>
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
+                ) : queue.length > 0 ? (
+                  queue.map((item, index) => {
+                    return (
+                      <CardQueue
+                        data={item}
+                        key={index}
+                        background={
+                          user && user?.id == item?.userID
+                            ? "#051d3d"
+                            : "#c0c7d0"
+                        }
+                        color={
+                          user && user?.id == item?.userID
+                            ? "#c0c7d0"
+                            : "#051d3d"
+                        }
+                        index={++index}
+                      />
+                    );
+                  })
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <h1 className="text-black-50">Tidak ada antrian</h1>
                   </div>
-                </div>
+                )}
               </div>
               <div className="booking-btn">
                 <Link
@@ -277,20 +187,21 @@ const Booking2 = (props) => {
                     <div className="booking-doctor-left">
                       <div className="booking-doctor-img">
                         <Link to="/patient/doctor-profile">
-                          <img src={doctor_01} alt="doctor" />
+                          <img src={data?.photos} alt="doctor" />
                         </Link>
                       </div>
                       <div className="booking-doctor-info">
                         <h4>
-                          <Link to="/patient/doctor-profile">Dr. John Doe</Link>
+                          <Link to="/patient/doctor-profile">
+                            Dr. {data?.name}
+                          </Link>
                         </h4>
-                        <p>MBBS, Dentist</p>
+                        <p>{data?.specialist?.name}</p>
                       </div>
                     </div>
                     <div className="booking-doctor-right">
                       <p>
                         <i className="fas fa-check-circle" />
-                        <Link to="/patient/profile">Edit</Link>
                       </p>
                     </div>
                   </div>

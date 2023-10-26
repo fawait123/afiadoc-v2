@@ -1,4 +1,3 @@
-import Register from "./../client/components/register/register.jsx";
 import ForgotPassword from "./../client/components/forgot-password";
 import Home from "./../client/components/home/index";
 import Home9 from "./../client/components/home/home9";
@@ -26,7 +25,6 @@ import Calendar from "./../client/components/pages/calender";
 import Invoice from "./../client/components/pages/invoices/invoices";
 import InvoiceView from "./../client/components/pages/invoices/view";
 import DoctorGrid from "./../client/components/patients/doctorgrid";
-import DoctorProfile from "./../client/components/patients/doctorprofile";
 import DoctorChat from "./../client/components/doctors/chat";
 import PatientChat from "./../client/components/patients/chat";
 import MyPatient from "./../client/components/doctors/mypatient";
@@ -37,7 +35,6 @@ import Checkout from "./../client/components/patients/checkout";
 import BookingSuccess from "./../client/components/patients/booking-success";
 import PatientAccounts from "./../client/components/patients/accounts";
 import MedicalDetails from "./../client/components/patients/medicaldetails";
-import Favourties from "./../client/components/patients/dashboard/favourties";
 import Profile from "./../client/components/patients/dashboard/profile";
 import Password from "./../client/components/patients/dashboard/password";
 import SocialMedia from "./../client/components/doctors/socialmedia";
@@ -154,10 +151,6 @@ const templateRoute = [
   {
     path: "/doctor/chat-doctor",
     component: DoctorChat,
-  },
-  {
-    path: "/register",
-    component: Register,
   },
   {
     path: "/pages/forgot-password",
@@ -568,10 +561,6 @@ const templateRoute = [
     component: Patientregisterstepfive,
   },
   {
-    path: "/patient/doctor-profile",
-    component: DoctorProfile,
-  },
-  {
     path: "/doctor/my-patients",
     component: MyPatient,
   },
@@ -602,10 +591,6 @@ const templateRoute = [
   {
     path: "/patient/medicaldetails",
     component: MedicalDetails,
-  },
-  {
-    path: "/patient/favourites",
-    component: Favourties,
   },
   {
     path: "/patient/profile",

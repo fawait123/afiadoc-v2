@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import loginBanner from "../../assets/images/login-banner.png";
+import loginBanner from "../../assets/images/login-banner.svg";
 import { Link } from "react-router-dom";
 import useGlobalStore from "../../../STORE/GlobalStore";
 import { Formik } from "formik";
@@ -37,6 +37,7 @@ const LoginContainer = () => {
                     <div className="login-header">
                       <h3>
                         Login <span>Doccure</span>
+                        <Link to="/doctor-register">Are you doctor ?</Link>
                       </h3>
                     </div>
                     <Formik

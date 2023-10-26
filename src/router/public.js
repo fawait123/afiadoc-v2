@@ -8,6 +8,11 @@ import Orders from "./../client/components/patients/orders";
 import MedicalRecords from "./../client/components/patients/medicalrecords";
 import DoctorDashboard from "./../client/components/doctors/dashboard";
 import Booking from "../client/components/doctors/booking";
+import Register from "./../client/components/register/register.jsx";
+import DoctorRegister from "../client/components/register/doctorregister";
+import Favourties from "./../client/components/patients/dashboard/favourties";
+import Booking2 from "../client/components/patients/booking/booking2";
+import DoctorProfile from "./../client/components/patients/doctorprofile";
 
 const publicRoutes = [
   // route public
@@ -20,12 +25,28 @@ const publicRoutes = [
     component: LoginContainer,
   },
   {
+    path: "/register",
+    component: Register,
+  },
+  {
+    path: "/doctor-register",
+    component: DoctorRegister,
+  },
+  {
     path: "/doctors",
     component: SearchDoctor2,
   },
   {
     path: "/doctors/map",
     component: DoctorList,
+  },
+  {
+    path: "/booking/:doctorID",
+    component: Booking2,
+  },
+  {
+    path: "/doctor/:doctorID",
+    component: DoctorProfile,
   },
   // route patient
   {
@@ -47,6 +68,10 @@ const publicRoutes = [
   {
     path: "/patient/medicalrecords",
     component: MedicalRecords,
+  },
+  {
+    path: "/patient/favourites",
+    component: Favourties,
   },
   // doctor route
   {

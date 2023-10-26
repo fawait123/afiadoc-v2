@@ -5,7 +5,7 @@ import { BASE_URL } from "../config";
 
 const handleNotification = (type, title, text) => {
   notification.config({
-    placement: "bottomRight",
+    placement: "topRight",
   });
   notification[type]({
     message: title,

@@ -5,25 +5,49 @@ import Doctors from "./doctors";
 import Footer from "../../footer";
 import { Link } from "react-router-dom";
 import httpRequest from "../../../../API/http";
+import useGlobalStore from "../../../../STORE/GlobalStore";
 
 const SearchDoctor2 = (props) => {
+  // eslint-disable-next-line no-unused-vars
   const [minValue, setMinValue] = useState(10);
+  // eslint-disable-next-line no-unused-vars
   const [maxValue, setMaxValue] = useState(5000);
   const [doctors, setDoctors] = useState([]);
+  const [count, setCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const { loadingTable, setLoadingTable } = useGlobalStore((state) => state);
+  const [params, setParams] = useState({
+    gender: [],
+    specialist: [],
+    rating: [],
+  });
 
-  const getData = async () => {
+  const getData = async (current = null) => {
+    setLoadingTable(true);
     httpRequest({
       url: "public/doctor",
       method: "get",
       params: {
-        page: 1,
-        limit: 10,
+        page: current ? current : page,
+        limit: 5,
         isActive: 1,
       },
-    }).then((response) => {
-      console.log(response, "res");
-      setDoctors(response?.data?.results?.data?.rows);
-    });
+    })
+      .then((response) => {
+        console.log(response, "res");
+        setDoctors(response?.data?.results?.data?.rows);
+        setCount(response?.data?.results?.data?.count);
+        setPage(response?.data?.results?.data?.page);
+        setLoadingTable(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoadingTable(false);
+      });
+  };
+
+  const onChange = (page) => {
+    getData(page);
   };
 
   useEffect(() => {
@@ -102,122 +126,64 @@ const SearchDoctor2 = (props) => {
                                 <ul>
                                   <li>
                                     <label className="custom_check d-inline-flex">
-                                      <input type="checkbox" name="gender" />
+                                      <input
+                                        type="checkbox"
+                                        name="gender"
+                                        value={"L"}
+                                        onChange={(event) => {
+                                          if (event.target.checked) {
+                                            setParams({
+                                              gender: [
+                                                ...params.gender,
+                                                event.target.value,
+                                              ],
+                                            });
+                                          } else {
+                                            const index = params.gender.indexOf(
+                                              event.target.value
+                                            );
+                                            if (index > -1) {
+                                              // only splice params.gender when item is found
+                                              params.gender.splice(index, 1); // 2nd parameter means remove one item only
+                                            }
+                                          }
+                                        }}
+                                      />
                                       <span className="checkmark" />
                                       Male Gender
                                     </label>
                                   </li>
                                   <li>
                                     <label className="custom_check d-inline-flex">
-                                      <input type="checkbox" name="gender" />
+                                      <input
+                                        type="checkbox"
+                                        name="gender"
+                                        value={"P"}
+                                        onChange={(event) => {
+                                          if (event.target.checked) {
+                                            setParams({
+                                              gender: [
+                                                ...params.gender,
+                                                event.target.value,
+                                              ],
+                                            });
+                                          } else {
+                                            const index = params.gender.indexOf(
+                                              event.target.value
+                                            );
+                                            if (index > -1) {
+                                              // only splice params.gender when item is found
+                                              params.gender.splice(index, 1); // 2nd parameter means remove one item only
+                                            }
+                                          }
+                                        }}
+                                      />
+                                      {console.log(params)}
                                       <span className="checkmark" />
                                       Female Gender
                                     </label>
                                   </li>
                                 </ul>
-                              </div>
-                            </div>
-                          </div>
-                          {/* /Filter Grid */}
-                          {/* Filter Grid */}
-                          <div className="filter-grid">
-                            <h4>
-                              <Link to="#collapsetwo" data-bs-toggle="collapse">
-                                Availability
-                              </Link>
-                            </h4>
-                            <div id="collapsetwo" className="collapse show">
-                              <div className="filter-collapse">
-                                <ul>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input
-                                        type="checkbox"
-                                        name="availability"
-                                      />
-                                      <span className="checkmark" />
-                                      Available Today
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input
-                                        type="checkbox"
-                                        name="availability"
-                                      />
-                                      <span className="checkmark" />
-                                      Available Tomorrow
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input
-                                        type="checkbox"
-                                        name="availability"
-                                      />
-                                      <span className="checkmark" />
-                                      Available in Next 7 Days
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input
-                                        type="checkbox"
-                                        name="availability"
-                                      />
-                                      <span className="checkmark" />
-                                      Available in Next 30 Days
-                                    </label>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          {/* /Filter Grid */}
-                          {/* Filter Grid */}
-                          <div className="filter-grid">
-                            <h4>
-                              <Link
-                                to="#collapsethree"
-                                data-bs-toggle="collapse"
-                              >
-                                Consultation Fee
-                              </Link>
-                            </h4>
-                            <div id="collapsethree" className="collapse show">
-                              <div className="filter-collapse">
-                                <div className="filter-content filter-content-slider">
-                                  <p>
-                                    $100 <span>$10000</span>
-                                  </p>
-                                  <div className="slider-wrapper">
-                                    <div id="price-range" />
-                                  </div>
-                                  <div className="price-wrapper">
-                                    <input
-                                      style={{ width: "100%" }}
-                                      id="price-range"
-                                      type="range"
-                                      min={10}
-                                      max={10000}
-                                      values={`${minValue},${maxValue}`}
-                                      onChange={handleSliderChange}
-                                    />
-                                    <h6>
-                                      Price:
-                                      <span>
-                                        $
-                                        <span id="pricerangemin">
-                                          {minValue}
-                                        </span>
-                                        - $
-                                        <span id="pricerangemax">
-                                          {maxValue}
-                                        </span>
-                                      </span>
-                                    </h6>
-                                  </div>
-                                </div>
                               </div>
                             </div>
                           </div>
@@ -263,91 +229,6 @@ const SearchDoctor2 = (props) => {
                                       />
                                       <span className="checkmark" />
                                       Cardiology
-                                    </label>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          {/* /Filter Grid */}
-                          {/* Filter Grid */}
-                          <div className="filter-grid">
-                            <h4>
-                              <Link
-                                to="#collapsefive"
-                                data-bs-toggle="collapse"
-                              >
-                                Experience
-                              </Link>
-                            </h4>
-                            <div id="collapsefive" className=" collapse show">
-                              <div className="filter-collapse">
-                                <ul>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input
-                                        type="checkbox"
-                                        name="experience"
-                                      />
-                                      <span className="checkmark" />
-                                      1-5 Years
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input
-                                        type="checkbox"
-                                        name="experience"
-                                      />
-                                      <span className="checkmark" />
-                                      5+ Years
-                                    </label>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          {/* /Filter Grid */}
-                          {/* Filter Grid */}
-                          <div className="filter-grid">
-                            <h4>
-                              <Link to="#collapsesix" data-bs-toggle="collapse">
-                                Online Consultation
-                              </Link>
-                            </h4>
-                            <div id="collapsesix" className="collapse show">
-                              <div className="filter-collapse">
-                                <ul>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input type="checkbox" name="online" />
-                                      <span className="checkmark" />
-                                      <i className="feather-video online-icon" />{" "}
-                                      Video Call
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input type="checkbox" name="online" />
-                                      <span className="checkmark" />
-                                      <i className="feather-mic online-icon" />{" "}
-                                      Audio Call
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input type="checkbox" name="online" />
-                                      <span className="checkmark" />
-                                      <i className="feather-message-square online-icon" />{" "}
-                                      Chat
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input type="checkbox" name="online" />
-                                      <span className="checkmark" />
-                                      <i className="feather-users online-icon" />{" "}
-                                      Instant Consulting
                                     </label>
                                   </li>
                                 </ul>
@@ -453,52 +334,6 @@ const SearchDoctor2 = (props) => {
                             </div>
                           </div>
                           {/* /Filter Grid */}
-                          {/* Filter Grid */}
-                          <div className="filter-grid">
-                            <h4>
-                              <Link
-                                to="#collapseeight"
-                                data-bs-toggle="collapse"
-                              >
-                                Languages
-                              </Link>
-                            </h4>
-                            <div id="collapseeight" className="collapse show">
-                              <div className="filter-collapse">
-                                <ul>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input type="checkbox" name="language" />
-                                      <span className="checkmark" />
-                                      English
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input type="checkbox" name="language" />
-                                      <span className="checkmark" />
-                                      French
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input type="checkbox" name="language" />
-                                      <span className="checkmark" />
-                                      Spanish
-                                    </label>
-                                  </li>
-                                  <li>
-                                    <label className="custom_check d-inline-flex">
-                                      <input type="checkbox" name="language" />
-                                      <span className="checkmark" />
-                                      German
-                                    </label>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                          {/* /Filter Grid */}
                           {/* Filter Btn */}
                           <div className="filter-btn apply-btn">
                             <div className="row">
@@ -525,7 +360,14 @@ const SearchDoctor2 = (props) => {
                 </div>
 
                 <div className="col-lg-9">
-                  <Doctors datas={doctors} />
+                  <Doctors
+                    datas={doctors}
+                    currentPage={page}
+                    total={count}
+                    perPage={5}
+                    paginationChange={onChange}
+                    loadingTable={loadingTable}
+                  />
                 </div>
               </div>
             </div>

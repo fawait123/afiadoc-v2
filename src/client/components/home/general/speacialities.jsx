@@ -111,7 +111,7 @@ function Speacialities({ datas, loading }) {
             )}
           </div>
           <div className="specialities-btn aos" data-aos="fade-up">
-            <Link to="/patient/search-doctor1" className="btn">
+            <Link to="/doctors" className="btn">
               See All Specialities
             </Link>
           </div>

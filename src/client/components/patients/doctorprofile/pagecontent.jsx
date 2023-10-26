@@ -4,8 +4,13 @@ import SimpleReactLightbox from "simple-react-lightbox";
 import MyComponent from "./mycomponent";
 import { Link } from "react-router-dom";
 import { doctorthumb02 } from "../../imagepath";
+import Utils from "../../../../helpers/utils";
+import { IMAGEPATH } from "../../../../config";
+import httpRequest from "../../../../API/http";
+import useGlobalStore from "../../../../STORE/GlobalStore";
 
-const Pagecontent = () => {
+const Pagecontent = (props) => {
+  const { user } = useGlobalStore((state) => state);
   return (
     <>
       <div>
@@ -14,16 +19,20 @@ const Pagecontent = () => {
             <div className="doctor-widget">
               <div className="doc-info-left">
                 <div className="doctor-img">
-                  <img src={IMG01} className="img-fluid" alt="User Image" />
+                  <img
+                    src={IMAGEPATH + props?.data?.photos}
+                    className="img-fluid"
+                    alt="User Image"
+                  />
                 </div>
                 <div className="doc-info-cont">
-                  <h4 className="doc-name">Dr. Darren Elder</h4>
+                  <h4 className="doc-name">Dr. {props?.data?.name}</h4>
                   <p className="doc-speciality">
                     BDS, MDS - Oral &amp; Maxillofacial Surgery
                   </p>
                   <p className="doc-department">
                     <img src={IMG02} className="img-fluid" alt="Speciality" />
-                    Dentist
+                    {props?.data?.specialist?.name}
                   </p>
                   <div className="rating">
                     <i className="fas fa-star filled" />
@@ -31,15 +40,15 @@ const Pagecontent = () => {
                     <i className="fas fa-star filled" />
                     <i className="fas fa-star filled" />
                     <i className="fas fa-star" />
-                    <span className="d-inline-block average-rating ms-1">(35)</span>
+                    <span className="d-inline-block average-rating ms-1">
+                      (35)
+                    </span>
                   </div>
                   <div className="clinic-details">
                     <p className="doc-location">
-                      <i className="fas fa-map-marker-alt"></i> Newyork, USA -
+                      <i className="fas fa-map-marker-alt"></i>{" "}
+                      {Utils.formatAddress(props?.data?.addresses)}
                     </p>
-
-                    {/* <i className="fas fa-map-marker-alt" /> Newyork, USA -{" "}
-              <Link to="#;">Get Directions</Link> */}
 
                     <div>
                       <SimpleReactLightbox>
@@ -66,40 +75,64 @@ const Pagecontent = () => {
                       <i className="fas fa-map-marker-alt" /> Newyork, USA
                     </li>
                     <li>
-                      <i className="far fa-money-bill-alt" /> $100 per hour{" "}
+                      <i className="far fa-money-bill-alt" />{" "}
+                      {Utils.doctorPrice(props?.data?.prices)?.toLocaleString(
+                        "id",
+                        "ID"
+                      )}
                     </li>
                   </ul>
                 </div>
-                <div className="doctor-action">
-                  <Link to="#" className="btn btn-white fav-btn">
-                    <i className="far fa-bookmark" />
-                  </Link>
-                  <Link
-                    to="/doctor/chat-doctor"
-                    className="btn btn-white msg-btn"
-                  >
-                    <i className="far fa-comment-alt" />
-                  </Link>
+                {user ? (
+                  <div className="doctor-action">
+                    <a
+                      to="#"
+                      className="btn btn-white fav-btn"
+                      onClick={async () => {
+                        await httpRequest({
+                          url: "/admin/favorite",
+                          method: "post",
+                          data: {
+                            doctorID: props?.data?.id,
+                          },
+                        })
+                          .then((response) => {
+                            console.log(response);
+                          })
+                          .catch((e) => {
+                            console.log(e);
+                          });
+                      }}
+                    >
+                      <i className="far fa-bookmark" />
+                    </a>
+                    <Link
+                      to="/doctor/chat-doctor"
+                      className="btn btn-white msg-btn"
+                    >
+                      <i className="far fa-comment-alt" />
+                    </Link>
 
-                  <Link
-                    to="#"
-                    className="btn btn-white call-btn"
-                    data-bs-toggle="modal"
-                    data-bs-target="#voice_call"
-                  >
-                    <i className="fas fa-phone" />
-                  </Link>
-                  <Link
-                    to="#"
-                    className="btn btn-white call-btn"
-                    data-bs-toggle="modal"
-                    data-bs-target="#video_call"
-                  >
-                    <i className="fas fa-video" />
-                  </Link>
-                </div>
+                    <Link
+                      to="#"
+                      className="btn btn-white call-btn"
+                      data-bs-toggle="modal"
+                      data-bs-target="#voice_call"
+                    >
+                      <i className="fas fa-phone" />
+                    </Link>
+                    <Link
+                      to="#"
+                      className="btn btn-white call-btn"
+                      data-bs-toggle="modal"
+                      data-bs-target="#video_call"
+                    >
+                      <i className="fas fa-video" />
+                    </Link>
+                  </div>
+                ) : null}
                 <div className="clinic-booking">
-                  <Link className="apt-btn" to="/patient/booking1">
+                  <Link className="apt-btn" to={`/booking/${props?.data?.id}`}>
                     Book Appointment
                   </Link>
                 </div>

@@ -7,15 +7,16 @@ import Content from "./content";
 import Pagecontent from "./pagecontent";
 import Utils from "../../../../helpers/utils";
 import httpRequest from "../../../../API/http";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const DoctorProfile = (props) => {
-  const id = Utils.useQuery("id");
+  const { doctorID } = useParams();
   const [show, setShow] = useState(false);
   const [videocall, setvideocall] = useState(false);
   const [isOpen, setisOpen] = useState(false);
   const [state, setState] = useState(false);
   const [photoIndex, setphotoIndex] = useState(false);
-  const [doctor, setDoctor] = useState(null);
+  const [doctor, setDoctor] = useState({});
 
   const getData = async () => {
     await httpRequest({
@@ -24,13 +25,16 @@ const DoctorProfile = (props) => {
       params: {
         page: 1,
         limit: 10,
-        isActive: 1,
-        id,
+        doctorID,
       },
-    }).then((response) => {
-      console.log(response);
-      setDoctor(response?.data?.results?.data?.rows);
-    });
+    })
+      .then((response) => {
+        console.log(response);
+        setDoctor(response?.data?.results?.data?.rows[0] || {});
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   useEffect(() => {
@@ -61,7 +65,7 @@ const DoctorProfile = (props) => {
 
       <div className="content">
         <div className="container">
-          <Pagecontent />
+          <Pagecontent data={doctor} />
           <Content />
         </div>
       </div>
